@@ -86,6 +86,26 @@
       .join-split-text { padding: 44px 28px; }
       .collab-grid { grid-template-columns: 1fr; }
     }
+
+    /* FAQ split */
+    .faq-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .faq-img {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      box-shadow: var(--shadow-lg);
+      background: var(--gray-100);
+    }
+    .faq-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    @media (max-width: 900px) {
+      .faq-split { grid-template-columns: 1fr; }
+      .faq-img { aspect-ratio: 16/9; }
+    }
   </style>
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
 </head>
@@ -131,7 +151,7 @@
           </div>
         </div>
         <div class="join-split-img">
-          <img src="https://csapurdue.com/img/finals-week.jpeg" alt="CSAP community"
+          <img src="img/gallery/picnic25.jpeg" alt="CSAP community"
                onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-flag\' style=\'font-size:4rem;color:var(--gold);opacity:0.7;\'></i>'" />
         </div>
       </div>
@@ -174,25 +194,30 @@
     <!-- FAQ -->
     <section class="section section-alt" aria-label="FAQ">
       <div class="section-inner fade-in">
-        <p class="section-label">Questions</p>
-        <h2 class="section-title">Frequently Asked</h2>
-        <div class="section-divider"></div>
-        <div style="max-width:720px;">
-          <div class="highlight-box" style="margin-bottom:16px;">
-            <p class="highlight-box-title">Do I need to be Colombian to join?</p>
-            <p class="highlight-box-text">Not at all! CSAP welcomes anyone who is interested in Colombian culture, has ties to Colombia, or simply wants to be part of a warm, vibrant community.</p>
+        <div class="faq-split">
+          <div>
+            <p class="section-label">Questions</p>
+            <h2 class="section-title">Frequently Asked</h2>
+            <div class="section-divider"></div>
+            <div class="highlight-box" style="margin-bottom:16px;">
+              <p class="highlight-box-title">Do I need to be Colombian to join?</p>
+              <p class="highlight-box-text">Not at all! CSAP welcomes anyone who is interested in Colombian culture, has ties to Colombia, or simply wants to be part of a warm, vibrant community.</p>
+            </div>
+            <div class="highlight-box" style="margin-bottom:16px;">
+              <p class="highlight-box-title">Is there a membership fee?</p>
+              <p class="highlight-box-text">Membership is free! Some events may have a small fee to cover costs, but joining CSAP itself is always free of charge.</p>
+            </div>
+            <div class="highlight-box" style="margin-bottom:16px;">
+              <p class="highlight-box-title">How often do you meet?</p>
+              <p class="highlight-box-text">We hold general meetings each semester and organize multiple events throughout the year. Follow us on Instagram @csapurdue for the latest schedule.</p>
+            </div>
+            <div class="highlight-box">
+              <p class="highlight-box-title">Can I join mid-semester?</p>
+              <p class="highlight-box-text">Absolutely! You can join CSAP at any time during the year. Just sign up on BoilerLink and come to our next event.</p>
+            </div>
           </div>
-          <div class="highlight-box" style="margin-bottom:16px;">
-            <p class="highlight-box-title">Is there a membership fee?</p>
-            <p class="highlight-box-text">Membership is free! Some events may have a small fee to cover costs, but joining CSAP itself is always free of charge.</p>
-          </div>
-          <div class="highlight-box" style="margin-bottom:16px;">
-            <p class="highlight-box-title">How often do you meet?</p>
-            <p class="highlight-box-text">We hold general meetings each semester and organize multiple events throughout the year. Follow us on Instagram @csapurdue for the latest schedule.</p>
-          </div>
-          <div class="highlight-box">
-            <p class="highlight-box-title">Can I join mid-semester?</p>
-            <p class="highlight-box-text">Absolutely! You can join CSAP at any time during the year. Just sign up on BoilerLink and come to our next event.</p>
+          <div class="faq-img">
+            <img src="img/gallery/csap-stairs.jpg" alt="CSAP members" />
           </div>
         </div>
       </div>

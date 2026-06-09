@@ -13,23 +13,37 @@
     /* Colombia Hero */
     .colombia-hero {
       position: relative;
-      height: min(70vh, 560px);
-      background: linear-gradient(135deg, #003087 0%, #1a5f8b 40%, #CE1126 100%);
+      height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      background: #001a3a;
     }
-    .colombia-hero img {
+    .colombia-hero video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%) scale(1.18);
+    }
+    .colombia-hero::after {
+      content: '';
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.45);
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.25) 0%,
+        rgba(0,0,0,0.5) 60%,
+        rgba(0,0,0,0.65) 100%
+      );
     }
     .colombia-hero-content {
       position: relative;
+      z-index: 2;
       text-align: center;
       color: var(--white);
       padding: 24px;
@@ -120,8 +134,93 @@
     }
     @media (max-width: 500px) {
       .facts-grid { grid-template-columns: 1fr 1fr; }
-      .colombia-hero { height: 70vmax; min-height: 320px; }
+      .colombia-hero { height: 100svh; min-height: 400px; }
     }
+
+    /* About Colombia split */
+    .colombia-about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .colombia-about-img {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      box-shadow: var(--shadow-lg);
+      background: linear-gradient(135deg, #FCD116 0%, #003087 50%, #CE1126 100%);
+    }
+    .colombia-about-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .colombia-about-grid { grid-template-columns: 1fr; }
+      .colombia-about-img { aspect-ratio: 16/9; }
+    }
+
+    /* Video Modal */
+    .vid-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .vid-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .vid-modal-inner {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      background: #000;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.9);
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+    .vid-modal-overlay.open .vid-modal-inner { transform: scale(1); }
+    .vid-modal-video {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .vid-modal-video video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .vid-modal-close {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    .vid-modal-close:hover { background: #f0f0f0; }
   </style>
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
 </head>
@@ -133,14 +232,24 @@
 
     <!-- Colombia Hero Banner -->
     <section class="colombia-hero" aria-label="Colombia hero">
-      <img src="img/cartagena.jpg" alt="Cartagena, Colombia"
-           onerror="this.style.display='none'" />
+      <video
+        src="vid/colombia-preview.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true">
+      </video>
       <div class="colombia-hero-content">
         <p class="colombia-eyebrow">Nuestra Tierra · Our Land</p>
         <h1 class="colombia-title">Colombia</h1>
         <p class="colombia-subtitle">The country of beauty</p>
-        <a href="https://www.youtube.com/results?search_query=Colombia+travel" target="_blank" rel="noopener"
-           class="btn btn-outline-white" id="colombiaWatchBtn"><i class="fa-solid fa-circle-play"></i> Watch the Video</a>
+        <button class="btn btn-outline-white" id="colombiaWatchBtn"
+                aria-label="Watch Colombia video"
+                style="border:none; cursor:pointer;">
+          <i class="fa-solid fa-circle-play"></i> Watch the Video
+        </button>
       </div>
     </section>
 
@@ -174,7 +283,7 @@
     <!-- About Colombia -->
     <section class="section" aria-label="About Colombia">
       <div class="section-inner">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+        <div class="colombia-about-grid">
           <div class="fade-in">
             <p class="section-label">A Rich Heritage</p>
             <h2 class="section-title">More Than a Country</h2>
@@ -189,11 +298,8 @@
               Colombia is also the birthplace of literary giant <strong>Gabriel García Márquez</strong>, the father of Magical Realism, whose works have captivated readers around the world.
             </p>
           </div>
-          <div class="fade-in" style="transition-delay:0.15s; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3; background:linear-gradient(135deg,#FCD116 0%,#003087 50%,#CE1126 100%); display:flex; align-items:center; justify-content:center; font-size:5rem; box-shadow:var(--shadow-lg);">
-            <img src="img/colombia-landscape.jpg" alt="Colombian landscape"
-                 style="width:100%; height:100%; object-fit:cover;"
-                 onerror="this.style.display='none'" />
-            <i class="fa-solid fa-flag" style="font-size:4rem; color:rgba(255,255,255,0.6);"></i>
+          <div class="colombia-about-img fade-in" style="transition-delay:0.15s;">
+            <img src="img/colombia/bogota.jpeg" alt="Bogotá, Colombia" />
           </div>
         </div>
       </div>
@@ -207,42 +313,54 @@
         <div class="section-divider"></div>
         <div class="regions-grid">
           <div class="region-card" id="regionCaribbean">
-            <div class="region-thumb"><i class="fa-solid fa-umbrella-beach"></i></div>
+            <div class="region-thumb">
+              <img src="img/colombia/caribbean.jpg" alt="Caribbean Coast, Colombia" />
+            </div>
             <div class="region-body">
               <h3>Caribbean Coast</h3>
               <p>Cartagena de Indias, Santa Marta, Barranquilla — colonial walls, clear waters, and Vallenato music.</p>
             </div>
           </div>
           <div class="region-card" id="regionAndes">
-            <div class="region-thumb"><i class="fa-solid fa-mountain-sun"></i></div>
+            <div class="region-thumb">
+              <img src="img/colombia/andes.jpg" alt="Andes Region, Colombia" />
+            </div>
             <div class="region-body">
               <h3>Andes Region</h3>
               <p>Bogotá, Medellín, Cali — the heart of Colombia with coffee farms, museums, and vibrant nightlife.</p>
             </div>
           </div>
           <div class="region-card" id="regionAmazon">
-            <div class="region-thumb"><i class="fa-solid fa-leaf"></i></div>
+            <div class="region-thumb">
+              <img src="img/colombia/amazon.jpg" alt="Amazon Region, Colombia" />
+            </div>
             <div class="region-body">
               <h3>Amazon Region</h3>
               <p>Leticia and Amazonas — one of the most biodiverse places on Earth, home to indigenous communities.</p>
             </div>
           </div>
           <div class="region-card" id="regionPacific">
-            <div class="region-thumb"><i class="fa-solid fa-water"></i></div>
+            <div class="region-thumb">
+              <img src="img/colombia/pacific.jpg" alt="Pacific Coast, Colombia" />
+            </div>
             <div class="region-body">
               <h3>Pacific Coast</h3>
               <p>Chocó and Buenaventura — rich Afro-Colombian culture, whale watching, and pristine rainforests.</p>
             </div>
           </div>
           <div class="region-card" id="regionOrinoquia">
-            <div class="region-thumb"><i class="fa-solid fa-dove"></i></div>
+            <div class="region-thumb">
+              <img src="img/colombia/orinoquia.jpg" alt="Orinoquía (Llanos), Colombia" />
+            </div>
             <div class="region-body">
               <h3>Orinoquía (Llanos)</h3>
               <p>Vast plains famous for wildlife, horseback riding, and the vibrant Llanera culture and music.</p>
             </div>
           </div>
           <div class="region-card" id="regionIslands">
-            <div class="region-thumb"><i class="fa-solid fa-anchor"></i></div>
+            <div class="region-thumb">
+              <img src="img/colombia/islands.jpeg" alt="San Andrés and Providencia Islands" />
+            </div>
             <div class="region-body">
               <h3>Islands</h3>
               <p>San Andrés and Providencia — Colombian Caribbean islands with crystal-clear waters and reef ecosystems.</p>
@@ -258,15 +376,52 @@
         <p class="section-label">Bringing Colombia to Purdue</p>
         <h2 class="section-title" style="margin-bottom:16px;">Experience Colombian Culture</h2>
         <p class="section-body" style="margin:0 auto 28px; text-align:center;">CSAP brings Colombia's warmth, food, music, and traditions to West Lafayette every semester through cultural events, food nights, and community celebrations.</p>
-        <a href="events.html" class="btn btn-gold" id="colombiaEventsBtn">Explore Our Events →</a>
+        <a href="events.html" class="btn btn-gold" id="colombiaEventsBtn">Explore our events →</a>
       </div>
     </section>
 
   </main>
 
+  <!-- Colombia Video Modal -->
+  <div class="vid-modal-overlay" id="colombiaVidModal" role="dialog" aria-modal="true" aria-label="Colombia video player">
+    <div class="vid-modal-inner">
+      <button class="vid-modal-close" id="colombiaVidClose" aria-label="Close video">&#10005;</button>
+      <div class="vid-modal-video">
+        <video id="colombiaVidPlayer" controls
+               style="width:100%; height:100%; display:block;">
+          <source src="vid/colombia.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+
   <div id="footer-placeholder"></div>
 
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
-</body>
+  <script>
+    (function () {
+      const modal    = document.getElementById('colombiaVidModal');
+      const video    = document.getElementById('colombiaVidPlayer');
+      const openBtn  = document.getElementById('colombiaWatchBtn');
+      const closeBtn = document.getElementById('colombiaVidClose');
+
+      function openModal() {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        video.play();
+      }
+      function closeModal() {
+        modal.classList.remove('open');
+        video.pause();
+        video.currentTime = 0;
+        document.body.style.overflow = '';
+      }
+
+      openBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    })();
+  </script></body>
 </html>

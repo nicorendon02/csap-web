@@ -64,8 +64,26 @@
     .checklist li:last-child { border-bottom: none; }
     .check-icon { color: var(--gold); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
 
+    /* Split layout with image */
+    .info-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .info-split-img {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      aspect-ratio: 4/3;
+      background: var(--gray-100);
+    }
+    .info-split-img img { width:100%; height:100%; object-fit:cover; display:block; }
+
     @media (max-width: 768px) {
       .resource-grid { grid-template-columns: 1fr; }
+      .info-split { grid-template-columns: 1fr; }
+      .info-split-img { aspect-ratio: 16/9; }
     }
   </style>
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
@@ -84,11 +102,20 @@
     <!-- Welcome -->
     <section class="section section-alt" aria-label="Welcome message">
       <div class="section-inner">
-        <div class="highlight-box" style="max-width:800px;">
-          <p class="highlight-box-title">¡Bienvenido a Purdue!</p>
-          <p class="highlight-box-text">
-            Starting life at a new university, especially in a foreign country, can feel overwhelming. CSAP is here to help you navigate every step of the way — from paperwork and visas to finding the best arepas near campus. This page compiles the most important resources for new Colombian students at Purdue.
-          </p>
+        <div class="info-split">
+          <div data-animate="left">
+            <p class="section-label">Welcome!</p>
+            <h2 class="section-title" style="margin-bottom:20px;">We've Got You Covered</h2>
+            <div class="highlight-box">
+              <p class="highlight-box-title">¡Bienvenido a Purdue!</p>
+              <p class="highlight-box-text">
+                Starting life at a new university, especially in a foreign country, can feel overwhelming. CSAP is here to help you navigate every step of the way — from paperwork and visas to finding the best arepas near campus. This page compiles the most important resources for new Colombian students at Purdue.
+              </p>
+            </div>
+          </div>
+          <div class="info-split-img" data-animate="right">
+            <img src="img/gallery/diaspora.jpeg" alt="CSAP community gathering" />
+          </div>
         </div>
       </div>
     </section>
@@ -186,23 +213,28 @@
 
     <!-- Arrival Checklist -->
     <section class="section section-alt" aria-label="Arrival checklist">
-      <div class="section-inner fade-in">
-        <p class="section-label">First Steps</p>
-        <h2 class="section-title">Arrival Checklist</h2>
-        <div class="section-divider"></div>
-        <div style="max-width:640px;">
-          <ul class="checklist">
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Check in with ISS and complete your SEVIS/I-20 reporting</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Get your Purdue ID card at the ID Card Office</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Set up your Purdue email and BoilerKey two-factor authentication</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Open a US bank account (many banks are near campus)</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Get a local SIM card or US phone plan</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Enroll in Purdue's health insurance or waive with proof of coverage</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Register for your classes on MyPurdue</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Attend CSAP's welcome event and meet the community!</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Explore West Lafayette — coffee shops, grocery stores, restaurants</li>
-            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Download the Purdue app for maps, schedules, and alerts</li>
-          </ul>
+      <div class="section-inner">
+        <div class="info-split">
+          <div data-animate="left">
+            <p class="section-label">First Steps</p>
+            <h2 class="section-title">Arrival Checklist</h2>
+            <div class="section-divider"></div>
+            <ul class="checklist">
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Check in with ISS and complete your SEVIS/I-20 reporting</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Get your Purdue ID card at the ID Card Office</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Set up your Purdue email and BoilerKey two-factor authentication</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Open a US bank account (many banks are near campus)</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Get a local SIM card or US phone plan</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Enroll in Purdue's health insurance or waive with proof of coverage</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Register for your classes on MyPurdue</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Attend CSAP's welcome event and meet the community!</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Explore West Lafayette — coffee shops, grocery stores, restaurants</li>
+              <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Download the Purdue app for maps, schedules, and alerts</li>
+            </ul>
+          </div>
+          <div class="info-split-img" data-animate="right">
+            <img src="img/gallery/photo2.avif" alt="CSAP students at Purdue" />
+          </div>
         </div>
       </div>
     </section>

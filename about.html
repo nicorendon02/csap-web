@@ -10,6 +10,22 @@
     .fade-in { opacity:0; transform:translateY(24px); transition: opacity .6s ease, transform .6s ease; }
     .fade-in.visible { opacity:1; transform:none; }
 
+    /* Split layout (text + image) */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .about-split-img {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      aspect-ratio: 4/3;
+      background: var(--gray-100);
+    }
+    .about-split-img img { width:100%; height:100%; object-fit:cover; display:block; }
+
     /* Logo Section */
     .logo-section {
       display: grid;
@@ -87,6 +103,8 @@
     .timeline-text { font-size: 0.95rem; color: var(--gray-700); line-height: 1.7; }
 
     @media (max-width: 768px) {
+      .about-split { grid-template-columns: 1fr; }
+      .about-split-img { aspect-ratio: 16/9; }
       .logo-section { grid-template-columns: 1fr; }
       .values-grid { grid-template-columns: 1fr; }
     }
@@ -111,19 +129,26 @@
     <!-- Mission -->
     <section class="section section-alt" aria-label="Mission">
       <div class="section-inner">
-        <p class="section-label">Our Mission</p>
-        <h2 class="section-title">Who We Are</h2>
-        <div class="section-divider"></div>
-        <div class="section-body" style="max-width:800px;">
-          <p style="margin-bottom:18px;">
-            The <strong>Colombian Student Association at Purdue (CSAP)</strong> is a student organization at Purdue University dedicated to fostering a welcoming and inclusive community for Colombian students and those interested in Colombian culture.
-          </p>
-          <p style="margin-bottom:18px;">
-            We strive to provide academic support, cultural enrichment, professional development, and a sense of belonging for our members. Through events, mentorship, and collaboration, we aim to make the Purdue experience as enriching and memorable as possible.
-          </p>
-          <p>
-            Whether you're a Colombian student navigating life abroad for the first time, or simply someone who loves Colombian culture — <strong>CSAP is your home at Purdue.</strong>
-          </p>
+        <div class="about-split">
+          <div data-animate="left">
+            <p class="section-label">Our Mission</p>
+            <h2 class="section-title">Who We Are</h2>
+            <div class="section-divider"></div>
+            <div class="section-body">
+              <p style="margin-bottom:18px;">
+                The <strong>Colombian Student Association at Purdue (CSAP)</strong> is a student organization at Purdue University dedicated to fostering a welcoming and inclusive community for Colombian students and those interested in Colombian culture.
+              </p>
+              <p style="margin-bottom:18px;">
+                We strive to provide academic support, cultural enrichment, professional development, and a sense of belonging for our members. Through events, mentorship, and collaboration, we aim to make the Purdue experience as enriching and memorable as possible.
+              </p>
+              <p>
+                Whether you're a Colombian student navigating life abroad for the first time, or simply someone who loves Colombian culture — <strong>CSAP is your home at Purdue.</strong>
+              </p>
+            </div>
+          </div>
+          <div class="about-split-img" data-animate="right">
+            <img src="img/gallery/photo1.avif" alt="CSAP members together" />
+          </div>
         </div>
       </div>
     </section>
@@ -197,26 +222,31 @@
     <!-- Brief History -->
     <section class="section" aria-label="History">
       <div class="section-inner">
-        <p class="section-label">Our Journey</p>
-        <h2 class="section-title">A Brief History</h2>
-        <div class="section-divider"></div>
-        <div style="max-width:640px;" class="fade-in">
-          <div class="timeline">
-            <div class="timeline-item">
-              <p class="timeline-year">Founded</p>
-              <p class="timeline-text">CSAP was established at Purdue University by a group of passionate Colombian students who wanted to create a cultural home on campus.</p>
-            </div>
-            <div class="timeline-item">
-              <p class="timeline-year">Growth</p>
-              <p class="timeline-text">The association grew steadily, organizing cultural events, academic support sessions, and forging connections with other Latinx organizations at Purdue.</p>
-            </div>
-            <div class="timeline-item">
-              <p class="timeline-year">Community Impact</p>
-              <p class="timeline-text">CSAP expanded its reach through the Big Sibling Program, helping incoming Colombian students navigate life at Purdue with the guidance of experienced members.</p>
-            </div>
-            <div class="timeline-item">
-              <p class="timeline-year">Today — 2025–26</p>
-              <p class="timeline-text">With a passionate board and a growing membership, CSAP continues to thrive — hosting events, supporting students, and celebrating Colombian culture every semester.</p>
+        <div class="about-split">
+          <div class="about-split-img" data-animate="left">
+            <img src="img/gallery/csap_picnic_2022.avif" alt="CSAP picnic 2022" />
+          </div>
+          <div data-animate="right">
+            <p class="section-label">Our Journey</p>
+            <h2 class="section-title">A Brief History</h2>
+            <div class="section-divider"></div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <p class="timeline-year">Founded — 2011</p>
+                <p class="timeline-text">CSAP was established at Purdue University by a group of passionate Colombian students who wanted to create a cultural home on campus.</p>
+              </div>
+              <div class="timeline-item">
+                <p class="timeline-year">Growth</p>
+                <p class="timeline-text">The association grew steadily, organizing cultural events, academic support sessions, and forging connections with other Latinx organizations at Purdue.</p>
+              </div>
+              <div class="timeline-item">
+                <p class="timeline-year">Community Impact</p>
+                <p class="timeline-text">CSAP expanded its reach through the Big Sibling Program, helping incoming Colombian students navigate life at Purdue with the guidance of experienced members.</p>
+              </div>
+              <div class="timeline-item">
+                <p class="timeline-year">Today — 2025–26</p>
+                <p class="timeline-text">With a passionate board and a growing membership, CSAP continues to thrive — hosting events, supporting students, and celebrating Colombian culture every semester.</p>
+              </div>
             </div>
           </div>
         </div>
