@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join & Collaborate — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Become a CSAP member, join our Big Sibling Program, or collaborate with the Colombian Student Association at Purdue." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    /* Big split sections */
+    .join-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 480px;
+    }
+    .join-split-text {
+      padding: 64px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+    .join-split-img {
+      background: var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      overflow: hidden;
+    }
+    .join-split-img img { width:100%; height:100%; object-fit:cover; }
+
+    /* Membership steps */
+    .steps-list { list-style: none; margin-top: 8px; }
+    .steps-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+      font-size: 0.95rem;
+      color: var(--gray-700);
+      line-height: 1.6;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Collaborate cards */
+    .collab-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .collab-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 26px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .collab-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+    .collab-icon { font-size: 2.4rem; display: block; margin-bottom: 16px; }
+    .collab-card h3 { font-weight: 700; font-size: 1rem; color: var(--dark); margin-bottom: 8px; }
+    .collab-card p { font-size: 0.88rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 20px; }
+
+    @media (max-width: 900px) {
+      .join-split { grid-template-columns: 1fr; }
+      .join-split-img { min-height: 260px; }
+      .join-split-text { padding: 44px 28px; }
+      .collab-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main>
+
+    <header class="page-header">
+      <h1>Join & <span>Collaborate</span></h1>
+      <p>Become part of the CSAP family or partner with us</p>
+    </header>
+
+    <!-- Join CSAP -->
+    <section aria-label="Join CSAP">
+      <div class="join-split">
+        <div class="join-split-text fade-in" style="background:var(--white);">
+          <p class="section-label">Membership</p>
+          <h2 class="section-title">Become a Member</h2>
+          <div class="section-divider"></div>
+          <p style="font-size:0.95rem; color:var(--gray-700); line-height:1.75; margin-bottom:8px;">
+            Joining CSAP connects you with a community of Colombian students and culture enthusiasts at Purdue. As a member you'll get access to exclusive events, scholarship info, our Big Sibling Program, and much more.
+          </p>
+          <ul class="steps-list">
+            <li>
+              <div class="step-num">1</div>
+              <div><strong>Sign up on BoilerLink</strong> — Create or log in to your Purdue BoilerLink account and join CSAP.</div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div><strong>Attend a meeting or event</strong> — Show up, say hi, and meet the community.</div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div><strong>Get involved</strong> — Join committees, volunteer, or run for a board position!</div>
+            </li>
+          </ul>
+          <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;">
+            <a href="https://boilerlink.purdue.edu/organization/csap" target="_blank" rel="noopener"
+               class="btn btn-gold" id="joinBoilerlinkBtn">Join on BoilerLink →</a>
+            <a href="mailto:csap@purdue.edu" class="btn btn-outline" id="joinEmailBtn"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+          </div>
+        </div>
+        <div class="join-split-img">
+          <img src="https://csapurdue.com/img/finals-week.jpeg" alt="CSAP community"
+               onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-flag\' style=\'font-size:4rem;color:var(--gold);opacity:0.7;\'></i>'" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Collaborate options -->
+    <section class="section" aria-label="Collaborate">
+      <div class="section-inner fade-in">
+        <p class="section-label">Partner With Us</p>
+        <h2 class="section-title">Ways to Collaborate</h2>
+        <div class="section-divider"></div>
+        <div class="collab-grid">
+
+          <div class="collab-card" id="collabBigSibling">
+            <span class="collab-icon"><i class="fa-solid fa-people-group"></i></span>
+            <h3>Big Sibling Program</h3>
+            <p>Experienced CSAP members mentor incoming Colombian students, helping them navigate academic and social life at Purdue.</p>
+            <a href="mailto:csap@purdue.edu?subject=Big Sibling Program" class="btn btn-gold" id="collabBigSiblingBtn">Learn More</a>
+          </div>
+
+          <div class="collab-card" id="collabGiving">
+            <span class="collab-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+            <h3>Giving to CSAP</h3>
+            <p>Support our mission through the Purdue Day of Giving, direct donations, or by sponsoring one of our cultural events.</p>
+            <a href="https://boilerlink.purdue.edu/organization/csap" target="_blank" rel="noopener"
+               class="btn btn-gold" id="collabGivingBtn">Support Us</a>
+          </div>
+
+          <div class="collab-card" id="collabOrgs">
+            <span class="collab-icon"><i class="fa-solid fa-handshake"></i></span>
+            <h3>Organization Partnerships</h3>
+            <p>We love co-hosting events and collaborating with other Purdue organizations. Reach out to discuss partnership opportunities.</p>
+            <a href="mailto:csap@purdue.edu?subject=Partnership Inquiry" class="btn btn-gold" id="collabOrgsBtn">Get in Touch</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section-alt" aria-label="FAQ">
+      <div class="section-inner fade-in">
+        <p class="section-label">Questions</p>
+        <h2 class="section-title">Frequently Asked</h2>
+        <div class="section-divider"></div>
+        <div style="max-width:720px;">
+          <div class="highlight-box" style="margin-bottom:16px;">
+            <p class="highlight-box-title">Do I need to be Colombian to join?</p>
+            <p class="highlight-box-text">Not at all! CSAP welcomes anyone who is interested in Colombian culture, has ties to Colombia, or simply wants to be part of a warm, vibrant community.</p>
+          </div>
+          <div class="highlight-box" style="margin-bottom:16px;">
+            <p class="highlight-box-title">Is there a membership fee?</p>
+            <p class="highlight-box-text">Membership is free! Some events may have a small fee to cover costs, but joining CSAP itself is always free of charge.</p>
+          </div>
+          <div class="highlight-box" style="margin-bottom:16px;">
+            <p class="highlight-box-title">How often do you meet?</p>
+            <p class="highlight-box-text">We hold general meetings each semester and organize multiple events throughout the year. Follow us on Instagram @csapurdue for the latest schedule.</p>
+          </div>
+          <div class="highlight-box">
+            <p class="highlight-box-title">Can I join mid-semester?</p>
+            <p class="highlight-box-text">Absolutely! You can join CSAP at any time during the year. Just sign up on BoilerLink and come to our next event.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

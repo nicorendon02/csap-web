@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026–27 Board — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Meet the 2026–27 CSAP Board of Directors — the dedicated student leaders who make CSAP happen at Purdue University." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    /* Board grid */
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+      margin-top: 48px;
+    }
+    .board-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 24px 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .board-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+    .board-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      margin: 0 auto 18px;
+      object-fit: cover;
+      background: var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      overflow: hidden;
+    }
+    .board-photo img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+    .board-role {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 6px;
+    }
+    .board-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .board-major {
+      font-size: 0.82rem;
+      color: var(--gray-500);
+      margin-bottom: 16px;
+    }
+    .board-quote {
+      font-size: 0.88rem;
+      color: var(--gray-700);
+      line-height: 1.65;
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+
+    @media (max-width: 900px) {
+      .board-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .board-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main>
+
+    <header class="page-header">
+      <h1>2026–27 <span>Board</span></h1>
+      <p>Meet the passionate leaders driving CSAP forward this academic year</p>
+    </header>
+
+    <section class="section section-alt" aria-label="Board of Directors">
+      <div class="section-inner">
+        <p class="section-label">Leadership</p>
+        <h2 class="section-title">Executive Board</h2>
+        <div class="section-divider"></div>
+
+        <div class="board-grid">
+
+          <!-- President -->
+          <div class="board-card fade-in" id="boardPresident">
+            <div class="board-photo">
+              <img src="img/board/president.jpg" alt="Pablo — President"
+                   onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-circle-user\' style=\'font-size:4rem;color:var(--gold);opacity:0.6;\'></i>'" />
+            </div>
+            <div>
+              <p class="board-role">President</p>
+              <p class="board-name">Juan Pablo Camacho</p>
+              <p class="board-major">Major · Purdue University</p>
+              <p class="board-quote">"Leading CSAP is an honor — this community has given me so much, and I'm committed to giving back and taking us to the next level. ¡Con todo!"</p>
+            </div>
+          </div>
+
+          <!-- VP -->
+          <div class="board-card fade-in" id="boardVP" style="transition-delay:0.05s;">
+            <div class="board-photo">
+              <img src="img/board/vp.jpg" alt="JuanJo — Vice President"
+                   onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-circle-user\' style=\'font-size:3.5rem;color:var(--gold);opacity:0.6;\'></i>'" />
+            </div>
+            <p class="board-role">Vice President</p>
+            <p class="board-name">Juan Jose Mejia Alvarez</p>
+            <p class="board-major">Major · Purdue University</p>
+            <p class="board-quote">"Bringing people together is what CSAP does best — I'm here to make sure every event and initiative leaves a lasting impact."</p>
+          </div>
+
+          <!-- Secretary -->
+          <div class="board-card fade-in" id="boardSecretary" style="transition-delay:0.1s;">
+            <div class="board-photo">
+              <img src="img/board/secretary.jpg" alt="Angelly — Secretary"
+                   onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-circle-user\' style=\'font-size:3.5rem;color:var(--gold);opacity:0.6;\'></i>'" />
+            </div>
+            <p class="board-role">Secretary</p>
+            <p class="board-name">Jorge Perez De Jesus</p>
+            <p class="board-major">Major · Purdue University</p>
+            <p class="board-quote">"Every detail matters — I make sure CSAP runs smoothly so our members can focus on what really counts: community."</p>
+          </div>
+
+          <!-- Treasurer -->
+          <div class="board-card fade-in" id="boardTreasurer" style="transition-delay:0.15s;">
+            <div class="board-photo">
+              <img src="img/board/treasurer.jpg" alt="Ricardo — Treasurer"
+                   onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-circle-user\' style=\'font-size:3.5rem;color:var(--gold);opacity:0.6;\'></i>'" />
+            </div>
+            <p class="board-role">Treasurer</p>
+            <p class="board-name">Ricardo Andrés Calvo Méndez</p>
+            <p class="board-major">Major · Purdue University</p>
+            <p class="board-quote">"Responsible financial management means more resources for the events and programs our members love."</p>
+          </div>
+
+          <!-- PR / Events -->
+          <div class="board-card fade-in" id="boardPR" style="transition-delay:0.2s;">
+            <div class="board-photo">
+              <img src="img/board/pr.jpg" alt="Nicolas — PR & Events"
+                   onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-circle-user\' style=\'font-size:3.5rem;color:var(--gold);opacity:0.6;\'></i>'" />
+            </div>
+            <p class="board-role">Communications</p>
+            <p class="board-name">Nicolas Rendon</p>
+            <p class="board-major">Major · Purdue University</p>
+            <p class="board-quote">"Creating memorable experiences for our community is my passion. Every event should feel special."</p>
+          </div>
+
+          <!-- Academic Chair -->
+          <div class="board-card fade-in" id="boardAcademic" style="transition-delay:0.25s;">
+            <div class="board-photo">
+              <img src="img/board/academic.jpg" alt="Jorge — Academic Chair"
+                   onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-circle-user\' style=\'font-size:3.5rem;color:var(--gold);opacity:0.6;\'></i>'" />
+            </div>
+            <p class="board-role">Outreach</p>
+            <p class="board-name">Angelly Zharick Guarin Pava</p>
+            <p class="board-major">Major · Purdue University</p>
+            <p class="board-quote">"Academic success is a team sport. I'm here to ensure every CSAP member has the support they need to thrive."</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="text-align:center;">
+      <div class="section-inner">
+        <div class="highlight-box" style="max-width:640px; margin:0 auto;">
+          <p class="highlight-box-title">Interested in leadership?</p>
+          <p class="highlight-box-text">Board elections are held each spring semester. Get involved early by attending events and connecting with current board members to learn about opportunities.</p>
+        </div>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:28px;">
+          <a href="previous-officers.html" class="btn btn-outline" id="boardPrevBtn">Previous Officers</a>
+          <a href="join.html" class="btn btn-gold" id="boardJoinBtn">Join CSAP</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

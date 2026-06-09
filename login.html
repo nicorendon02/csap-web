@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Member Login — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Login to the CSAP members portal." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 50%, #0d2137 100%);
+      display: flex;
+      flex-direction: column;
+    }
+    /* Hide default page background - keep body dark */
+    body { background-color: #0d1b2a; }
+
+    .login-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Decorative background pattern */
+    .login-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(194,154,18,0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0,48,135,0.3) 0%, transparent 40%),
+        radial-gradient(circle at 60% 80%, rgba(206,17,38,0.15) 0%, transparent 40%);
+    }
+    /* Colombian flag stripe at top of page within login */
+    .login-flag {
+      display: flex;
+      height: 5px;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+    }
+    .login-flag .s-yellow { flex:2; background: var(--col-yellow); }
+    .login-flag .s-blue   { flex:1; background: var(--col-blue); }
+    .login-flag .s-red    { flex:1; background: var(--col-red); }
+
+    .login-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: var(--radius-lg);
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-bottom: 28px;
+      justify-content: center;
+    }
+    .login-logo .logo-emblem {
+      width: 44px;
+      height: 44px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    .login-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--dark);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .login-sub {
+      font-size: 0.88rem;
+      color: var(--gray-500);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: var(--dark);
+      background: var(--cream);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(194,154,18,0.15);
+      background: var(--white);
+    }
+    .form-input::placeholder { color: var(--gray-300); }
+
+    .form-extras {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+    .forgot-link {
+      font-size: 0.82rem;
+      color: var(--gold-dark);
+      font-weight: 600;
+      transition: color var(--transition);
+    }
+    .forgot-link:hover { color: var(--gold); }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition);
+      letter-spacing: 0.3px;
+    }
+    .btn-login:hover { background: var(--gold-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(194,154,18,0.35); }
+    .btn-login:active { transform: none; }
+
+    .login-divider {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      margin: 20px 0;
+      position: relative;
+    }
+    .login-divider::before, .login-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 38%;
+      height: 1px;
+      background: var(--border);
+    }
+    .login-divider::before { left: 0; }
+    .login-divider::after { right: 0; }
+
+    .login-register {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--gray-500);
+    }
+    .login-register a { color: var(--gold-dark); font-weight: 600; }
+    .login-register a:hover { color: var(--gold); }
+
+    .login-error {
+      display: none;
+      background: #fff0f0;
+      border: 1px solid #ffcccc;
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #cc0000;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .login-card { padding: 36px 24px; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div class="login-flag">
+    <div class="s-yellow"></div>
+    <div class="s-blue"></div>
+    <div class="s-red"></div>
+  </div>
+
+  <div class="login-page">
+    <div class="login-card">
+
+      <div class="login-logo">
+        <div class="logo-emblem"><i class="fa-solid fa-coins" style="color:#fff; font-size:1.2rem;"></i></div>
+        <span>CSAP</span>
+      </div>
+
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-sub">Sign in to the CSAP Members Portal</p>
+
+      <div class="login-error" id="loginError" role="alert">
+        Incorrect username or password. Please try again.
+      </div>
+
+      <!-- Form posts to PHP — stub ready for Hostinger -->
+      <form id="loginForm" action="php/login.php" method="POST" onsubmit="return handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="loginUsername">Username or Email</label>
+          <input class="form-input" type="text" id="loginUsername" name="username"
+                 placeholder="your@purdue.edu" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input class="form-input" type="password" id="loginPassword" name="password"
+                 placeholder="••••••••" autocomplete="current-password" required />
+        </div>
+        <div class="form-extras">
+          <a href="mailto:csap@purdue.edu?subject=Password Reset Request" class="forgot-link" id="forgotPwLink">
+            Forgot password?
+          </a>
+        </div>
+        <button type="submit" class="btn-login" id="loginSubmitBtn">Sign In</button>
+      </form>
+
+      <div class="login-divider">or</div>
+      <p class="login-register">
+        Not a member? <a href="join.html" id="loginJoinLink">Join CSAP →</a>
+      </p>
+      <p class="login-register" style="margin-top:10px;">
+        <a href="index.html" id="loginBackLink">← Back to website</a>
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    // Placeholder login handler — replace with real PHP session when ready
+    function handleLogin(e) {
+      // When php/login.php is live, remove this function and let the form submit normally.
+      // For now, show a friendly message.
+      e.preventDefault();
+      const user = document.getElementById('loginUsername').value.trim();
+      const pass = document.getElementById('loginPassword').value;
+      const errEl = document.getElementById('loginError');
+
+      if (!user || !pass) {
+        errEl.textContent = 'Please enter your username and password.';
+        errEl.style.display = 'block';
+        return false;
+      }
+
+      // TODO: Replace with real auth — redirect to members.html after PHP session set
+      errEl.style.display = 'none';
+      document.getElementById('loginSubmitBtn').textContent = 'Signing in…';
+      document.getElementById('loginSubmitBtn').disabled = true;
+
+      setTimeout(() => {
+        // Simulate redirect to members dashboard
+        window.location.href = 'members.html';
+      }, 1200);
+      return false;
+    }
+  </script>
+</body>
+</html>

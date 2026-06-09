@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Student Info — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Essential resources for new Colombian students at Purdue University. Guides on ISS, housing, health, and campus life." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .resource-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+      text-decoration: none;
+      color: inherit;
+    }
+    .resource-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+    .resource-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: var(--gold-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .resource-card h3 { font-weight: 700; font-size: 0.98rem; color: var(--dark); margin-bottom: 5px; }
+    .resource-card p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; margin-bottom: 10px; }
+    .resource-link {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gold-dark);
+    }
+
+    /* Checklist */
+    .checklist { list-style: none; margin-top: 16px; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 0.92rem;
+      color: var(--gray-700);
+      line-height: 1.6;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .check-icon { color: var(--gold); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+
+    @media (max-width: 768px) {
+      .resource-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main>
+
+    <header class="page-header">
+      <h1>Life at <span>Purdue</span></h1>
+      <p>Everything you need to know as a new student — we've got you covered</p>
+    </header>
+
+    <!-- Welcome -->
+    <section class="section section-alt" aria-label="Welcome message">
+      <div class="section-inner">
+        <div class="highlight-box" style="max-width:800px;">
+          <p class="highlight-box-title">¡Bienvenido a Purdue!</p>
+          <p class="highlight-box-text">
+            Starting life at a new university, especially in a foreign country, can feel overwhelming. CSAP is here to help you navigate every step of the way — from paperwork and visas to finding the best arepas near campus. This page compiles the most important resources for new Colombian students at Purdue.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Resources -->
+    <section class="section" aria-label="Key resources">
+      <div class="section-inner fade-in">
+        <p class="section-label">Getting Started</p>
+        <h2 class="section-title">Essential Resources</h2>
+        <div class="section-divider"></div>
+        <div class="resource-grid">
+
+          <a href="https://www.purdue.edu/isss/" target="_blank" rel="noopener"
+             class="resource-card" id="resISS">
+            <div class="resource-icon"><i class="fa-solid fa-passport"></i></div>
+            <div>
+              <h3>International Students & Scholars (ISS)</h3>
+              <p>Your go-to office for visa questions, CPT/OPT authorization, and immigration support at Purdue.</p>
+              <span class="resource-link">Visit ISS →</span>
+            </div>
+          </a>
+
+          <a href="https://www.purdue.edu/latinocultural/" target="_blank" rel="noopener"
+             class="resource-card" id="resLCC">
+            <div class="resource-icon"><i class="fa-solid fa-utensils"></i></div>
+            <div>
+              <h3>Latino Cultural Center</h3>
+              <p>A campus hub for Latino/a/x students offering programming, community, and cultural celebrations.</p>
+              <span class="resource-link">Visit LCC →</span>
+            </div>
+          </a>
+
+          <a href="https://www.purdue.edu/push/" target="_blank" rel="noopener"
+             class="resource-card" id="resHealth">
+            <div class="resource-icon"><i class="fa-solid fa-hospital"></i></div>
+            <div>
+              <h3>Purdue University Student Health</h3>
+              <p>Medical services, mental health counseling, and wellness resources for all Purdue students.</p>
+              <span class="resource-link">Visit PUSH →</span>
+            </div>
+          </a>
+
+          <a href="https://www.purdue.edu/housing/" target="_blank" rel="noopener"
+             class="resource-card" id="resHousing">
+            <div class="resource-icon"><i class="fa-solid fa-house"></i></div>
+            <div>
+              <h3>Housing & Food Services</h3>
+              <p>On-campus housing options, dining halls, and meal plan information for new students.</p>
+              <span class="resource-link">Explore Housing →</span>
+            </div>
+          </a>
+
+          <a href="https://www.purdue.edu/registrar/" target="_blank" rel="noopener"
+             class="resource-card" id="resRegistrar">
+            <div class="resource-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div>
+              <h3>Registrar's Office</h3>
+              <p>Course enrollment, transcripts, academic calendars, and graduation requirements.</p>
+              <span class="resource-link">Visit Registrar →</span>
+            </div>
+          </a>
+
+          <a href="https://www.purdue.edu/dso/" target="_blank" rel="noopener"
+             class="resource-card" id="resDSO">
+            <div class="resource-icon"><i class="fa-solid fa-handshake"></i></div>
+            <div>
+              <h3>Office of Diversity & Inclusion</h3>
+              <p>Resources and support for underrepresented students at Purdue University.</p>
+              <span class="resource-link">Learn More →</span>
+            </div>
+          </a>
+
+          <a href="https://www.purdue.edu/finan/" target="_blank" rel="noopener"
+             class="resource-card" id="resFinancial">
+            <div class="resource-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div>
+              <h3>Financial Aid & Scholarships</h3>
+              <p>Explore scholarships, grants, and financial aid options available to international students.</p>
+              <span class="resource-link">Find Funding →</span>
+            </div>
+          </a>
+
+          <a href="join.html" class="resource-card" id="resCsap">
+            <div class="resource-icon"><i class="fa-solid fa-flag"></i></div>
+            <div>
+              <h3>Join CSAP</h3>
+              <p>Connect with the Colombian community at Purdue. Our Big Sibling Program pairs you with an experienced mentor.</p>
+              <span class="resource-link">Become a Member →</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Arrival Checklist -->
+    <section class="section section-alt" aria-label="Arrival checklist">
+      <div class="section-inner fade-in">
+        <p class="section-label">First Steps</p>
+        <h2 class="section-title">Arrival Checklist</h2>
+        <div class="section-divider"></div>
+        <div style="max-width:640px;">
+          <ul class="checklist">
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Check in with ISS and complete your SEVIS/I-20 reporting</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Get your Purdue ID card at the ID Card Office</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Set up your Purdue email and BoilerKey two-factor authentication</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Open a US bank account (many banks are near campus)</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Get a local SIM card or US phone plan</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Enroll in Purdue's health insurance or waive with proof of coverage</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Register for your classes on MyPurdue</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Attend CSAP's welcome event and meet the community!</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Explore West Lafayette — coffee shops, grocery stores, restaurants</li>
+            <li><span class="check-icon"><i class="fa-solid fa-circle-check"></i></span>Download the Purdue app for maps, schedules, and alerts</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="text-align:center;">
+      <div class="section-inner">
+        <p class="section-label">We're Here to Help</p>
+        <h2 class="section-title" style="margin-bottom:16px;">Have Questions?</h2>
+        <p class="section-body" style="margin:0 auto 28px; text-align:center;">Don't navigate it alone. Reach out to CSAP and we'll connect you with someone who's been through it all.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+          <a href="mailto:csap@purdue.edu" class="btn btn-gold" id="newStudentEmailBtn"><i class="fa-solid fa-envelope"></i> Email CSAP</a>
+          <a href="join.html" class="btn btn-outline" id="newStudentJoinBtn">Join & Connect</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

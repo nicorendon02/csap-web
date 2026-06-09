@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members — CSAP Admin Dashboard</title>
+  <meta name="description" content="CSAP admin dashboard for managing members." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body class="admin-body">
+
+  <!-- Admin Top Bar -->
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <div class="admin-logo">
+        <div class="logo-emblem" style="background:var(--gold);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;"><i class="fa-solid fa-coins" style="color:#fff; font-size:1.1rem;"></i></div>
+        <span>CSAP</span>
+        <span class="admin-badge">Admin</span>
+      </div>
+      <div class="admin-header-right">
+        <span class="admin-user"><i class="fa-solid fa-user"></i> Board Member</span>
+        <a href="index.html" class="btn btn-outline" style="padding:7px 16px; font-size:0.82rem;">← Website</a>
+        <a href="login.html" class="btn btn-dark" style="padding:7px 16px; font-size:0.82rem;" id="adminLogoutBtn">Logout</a>
+      </div>
+    </div>
+    <div class="flag-stripe" style="height:4px;">
+      <div class="s-yellow"></div><div class="s-blue"></div><div class="s-red"></div>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <nav>
+        <p class="sidebar-section-label">Dashboard</p>
+        <a href="members.html" class="sidebar-link active" id="sidebarMembers">
+          <span><i class="fa-solid fa-users"></i></span> Members
+        </a>
+        <a href="#" class="sidebar-link" id="sidebarEvents">
+          <span><i class="fa-solid fa-calendar-days"></i></span> Events
+        </a>
+        <a href="#" class="sidebar-link" id="sidebarAnnouncements">
+          <span><i class="fa-solid fa-bullhorn"></i></span> Announcements
+        </a>
+        <p class="sidebar-section-label" style="margin-top:20px;">Settings</p>
+        <a href="#" class="sidebar-link" id="sidebarProfile">
+          <span><i class="fa-solid fa-gear"></i></span> Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+      <!-- Stats -->
+      <div class="admin-stats-row">
+        <div class="stat-card" id="statTotal">
+          <p class="stat-num" id="statTotalNum">—</p>
+          <p class="stat-label">Total Members</p>
+        </div>
+        <div class="stat-card" id="statActive">
+          <p class="stat-num" style="color:#16a34a;" id="statActiveNum">—</p>
+          <p class="stat-label">Active</p>
+        </div>
+        <div class="stat-card" id="statPending">
+          <p class="stat-num" style="color:var(--gold);" id="statPendingNum">—</p>
+          <p class="stat-label">Pending</p>
+        </div>
+        <div class="stat-card" id="statSuspended">
+          <p class="stat-num" style="color:#dc2626;" id="statSuspendedNum">—</p>
+          <p class="stat-label">Suspended</p>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="admin-toolbar">
+        <div class="toolbar-left">
+          <h1 class="admin-page-title">Active members</h1>
+          <p style="font-size:0.82rem; color:var(--gray-500); margin-top:2px;">All Users: <strong id="statTotalCount">—</strong> &nbsp; Projects: <strong>884</strong> <span style="opacity:0.5;">ⓘ</span></p>
+        </div>
+        <div class="toolbar-right">
+          <span style="font-size:0.82rem; color:var(--gray-500); margin-right:4px;">Table settings <i class="fa-solid fa-gear"></i></span>
+        </div>
+      </div>
+      <div class="admin-toolbar" style="margin-top:0; margin-bottom:16px;">
+        <div class="toolbar-left">
+          <button class="btn btn-gold" onclick="showAddModal()" id="addMemberBtn" style="padding:8px 16px; font-size:0.82rem;">+ Add new user</button>
+        </div>
+        <div class="toolbar-right">
+          <input type="search" class="admin-search" id="memberSearch"
+                 placeholder=" Search members…" oninput="filterMembers()" />
+          <select class="admin-select" id="roleFilter" onchange="filterMembers()">
+            <option value="">All Roles</option>
+            <option value="board">Board</option>
+            <option value="member">Member</option>
+            <option value="alumni">Alumni</option>
+          </select>
+          <select class="admin-select" id="statusFilter" onchange="filterMembers()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="suspended">Suspended</option>
+          </select>
+          <button class="action-btn" onclick="alert('Suspend all pending?')">Suspend all</button>
+          <button class="action-btn" onclick="alert('Archive all inactive?')">Archive all</button>
+          <button class="action-btn danger" onclick="alert('Delete all suspended?')">Delete all</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="membersTable">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" /></th>
+              <th>USER</th>
+              <th>USER ROLE</th>
+              <th>STATUS</th>
+              <th>SOCIAL PROFILE</th>
+              <th>PROMOTE</th>
+              <th>RATING</th>
+              <th>LAST LOGIN</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="admin-pagination" id="pagination"></div>
+
+    </main>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div class="modal-overlay" id="addModal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Add New Member</h2>
+        <button onclick="closeModal()" class="modal-close" id="modalCloseBtn">&times;</button>
+      </div>
+      <form onsubmit="addMember(event)" id="addMemberForm">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="newName" required placeholder="e.g. María García" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" id="newEmail" required placeholder="e.g. garcia@purdue.edu" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select class="form-input" id="newRole">
+            <option value="member">Member</option>
+            <option value="board">Board</option>
+            <option value="alumni">Alumni</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-input" id="newStatus">
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+        <div style="display:flex; gap:12px; margin-top:8px;">
+          <button type="submit" class="btn btn-gold" style="flex:1;" id="addMemberSubmit">Add Member</button>
+          <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/members.js"></script>
+</body>
+</html>

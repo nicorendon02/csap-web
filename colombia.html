@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colombia — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Discover Colombia — the country of beauty, culture, and biodiversity. Learn about our home country through the eyes of CSAP." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    /* Colombia Hero */
+    .colombia-hero {
+      position: relative;
+      height: min(70vh, 560px);
+      background: linear-gradient(135deg, #003087 0%, #1a5f8b 40%, #CE1126 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .colombia-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.45);
+    }
+    .colombia-hero-content {
+      position: relative;
+      text-align: center;
+      color: var(--white);
+      padding: 24px;
+    }
+    .colombia-eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+    }
+    .colombia-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+      margin-bottom: 12px;
+    }
+    .colombia-subtitle {
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      font-weight: 300;
+      letter-spacing: 1px;
+      opacity: 0.88;
+      margin-bottom: 32px;
+    }
+
+    /* Facts grid */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .fact-card {
+      text-align: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 18px;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .fact-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-lg); }
+    .fact-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .fact-label { font-size: 0.85rem; color: var(--gray-500); line-height: 1.4; }
+
+    /* Regions */
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .region-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .region-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .region-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, var(--gold-bg), var(--cream));
+    }
+    .region-thumb img { width:100%; height:100%; object-fit:cover; }
+    .region-body { padding: 20px; }
+    .region-body h3 { font-weight: 700; font-size: 0.98rem; color: var(--dark); margin-bottom: 6px; }
+    .region-body p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
+
+    @media (max-width: 900px) {
+      .facts-grid { grid-template-columns: repeat(2, 1fr); }
+      .regions-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      .facts-grid { grid-template-columns: 1fr 1fr; }
+      .colombia-hero { height: 70vmax; min-height: 320px; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main>
+
+    <!-- Colombia Hero Banner -->
+    <section class="colombia-hero" aria-label="Colombia hero">
+      <img src="img/cartagena.jpg" alt="Cartagena, Colombia"
+           onerror="this.style.display='none'" />
+      <div class="colombia-hero-content">
+        <p class="colombia-eyebrow">Nuestra Tierra · Our Land</p>
+        <h1 class="colombia-title">Colombia</h1>
+        <p class="colombia-subtitle">The country of beauty</p>
+        <a href="https://www.youtube.com/results?search_query=Colombia+travel" target="_blank" rel="noopener"
+           class="btn btn-outline-white" id="colombiaWatchBtn"><i class="fa-solid fa-circle-play"></i> Watch the Video</a>
+      </div>
+    </section>
+
+    <!-- Quick Facts -->
+    <section class="section section-alt" aria-label="Colombia facts">
+      <div class="section-inner fade-in">
+        <p class="section-label">By the Numbers</p>
+        <h2 class="section-title">Colombia at a Glance</h2>
+        <div class="section-divider"></div>
+        <div class="facts-grid">
+          <div class="fact-card" id="factPop">
+            <p class="fact-num">52M</p>
+            <p class="fact-label">Population — one of South America's largest</p>
+          </div>
+          <div class="fact-card" id="factBird">
+            <p class="fact-num">1,954</p>
+            <p class="fact-label">Bird species — the most biodiverse country on Earth</p>
+          </div>
+          <div class="fact-card" id="factCity">
+            <p class="fact-num">Bogotá</p>
+            <p class="fact-label">Capital city, at 2,640m above sea level</p>
+          </div>
+          <div class="fact-card" id="factFlower">
+            <p class="fact-num"><i class="fa-solid fa-seedling" style="color:var(--gold);"></i></p>
+            <p class="fact-label">Orchid — Colombia's national flower, 4,000+ species</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Colombia -->
+    <section class="section" aria-label="About Colombia">
+      <div class="section-inner">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;">
+          <div class="fade-in">
+            <p class="section-label">A Rich Heritage</p>
+            <h2 class="section-title">More Than a Country</h2>
+            <div class="section-divider"></div>
+            <p class="section-body" style="margin-bottom:18px;">
+              Colombia is a land of extraordinary diversity — from the lush Amazon rainforest and the snow-capped Andes to the golden Caribbean coast and the Pacific shores. It is the only country in South America with coastlines on both the Atlantic and Pacific oceans.
+            </p>
+            <p class="section-body" style="margin-bottom:18px;">
+              Home to the lost city of <strong>Ciudad Perdida</strong>, the magical town of <strong>Cartagena</strong>, and the world-famous <strong>Café de Colombia</strong>, the country's cultural richness is as diverse as its geography.
+            </p>
+            <p class="section-body">
+              Colombia is also the birthplace of literary giant <strong>Gabriel García Márquez</strong>, the father of Magical Realism, whose works have captivated readers around the world.
+            </p>
+          </div>
+          <div class="fade-in" style="transition-delay:0.15s; border-radius:var(--radius-lg); overflow:hidden; aspect-ratio:4/3; background:linear-gradient(135deg,#FCD116 0%,#003087 50%,#CE1126 100%); display:flex; align-items:center; justify-content:center; font-size:5rem; box-shadow:var(--shadow-lg);">
+            <img src="img/colombia-landscape.jpg" alt="Colombian landscape"
+                 style="width:100%; height:100%; object-fit:cover;"
+                 onerror="this.style.display='none'" />
+            <i class="fa-solid fa-flag" style="font-size:4rem; color:rgba(255,255,255,0.6);"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Regions -->
+    <section class="section section-alt" aria-label="Colombian regions">
+      <div class="section-inner fade-in">
+        <p class="section-label">Explore</p>
+        <h2 class="section-title">Colombia's Regions</h2>
+        <div class="section-divider"></div>
+        <div class="regions-grid">
+          <div class="region-card" id="regionCaribbean">
+            <div class="region-thumb"><i class="fa-solid fa-umbrella-beach"></i></div>
+            <div class="region-body">
+              <h3>Caribbean Coast</h3>
+              <p>Cartagena de Indias, Santa Marta, Barranquilla — colonial walls, clear waters, and Vallenato music.</p>
+            </div>
+          </div>
+          <div class="region-card" id="regionAndes">
+            <div class="region-thumb"><i class="fa-solid fa-mountain-sun"></i></div>
+            <div class="region-body">
+              <h3>Andes Region</h3>
+              <p>Bogotá, Medellín, Cali — the heart of Colombia with coffee farms, museums, and vibrant nightlife.</p>
+            </div>
+          </div>
+          <div class="region-card" id="regionAmazon">
+            <div class="region-thumb"><i class="fa-solid fa-leaf"></i></div>
+            <div class="region-body">
+              <h3>Amazon Region</h3>
+              <p>Leticia and Amazonas — one of the most biodiverse places on Earth, home to indigenous communities.</p>
+            </div>
+          </div>
+          <div class="region-card" id="regionPacific">
+            <div class="region-thumb"><i class="fa-solid fa-water"></i></div>
+            <div class="region-body">
+              <h3>Pacific Coast</h3>
+              <p>Chocó and Buenaventura — rich Afro-Colombian culture, whale watching, and pristine rainforests.</p>
+            </div>
+          </div>
+          <div class="region-card" id="regionOrinoquia">
+            <div class="region-thumb"><i class="fa-solid fa-dove"></i></div>
+            <div class="region-body">
+              <h3>Orinoquía (Llanos)</h3>
+              <p>Vast plains famous for wildlife, horseback riding, and the vibrant Llanera culture and music.</p>
+            </div>
+          </div>
+          <div class="region-card" id="regionIslands">
+            <div class="region-thumb"><i class="fa-solid fa-anchor"></i></div>
+            <div class="region-body">
+              <h3>Islands</h3>
+              <p>San Andrés and Providencia — Colombian Caribbean islands with crystal-clear waters and reef ecosystems.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Colombian Culture at Purdue -->
+    <section class="section" style="text-align:center;">
+      <div class="section-inner">
+        <p class="section-label">Bringing Colombia to Purdue</p>
+        <h2 class="section-title" style="margin-bottom:16px;">Experience Colombian Culture</h2>
+        <p class="section-body" style="margin:0 auto 28px; text-align:center;">CSAP brings Colombia's warmth, food, music, and traditions to West Lafayette every semester through cultural events, food nights, and community celebrations.</p>
+        <a href="events.html" class="btn btn-gold" id="colombiaEventsBtn">Explore Our Events →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

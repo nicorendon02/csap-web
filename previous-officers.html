@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Previous Officers — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Honor roll of CSAP's previous officers and board members who shaped the Colombian Student Association at Purdue over the years." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    .section-divider { margin-left: auto; margin-right: auto; }
+
+    /* Year Blocks */
+    .section-inner { text-align: center; }
+
+    .year-block {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      text-align: left;
+    }
+
+    .year-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      background: var(--gold-bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .year-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .year-badge {
+      background: var(--gold);
+      color: var(--white);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+    }
+    .year-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--dark);
+    }
+
+    .year-body {
+      padding: 28px;
+    }
+
+    /* Officers inside year */
+    .year-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    .year-photo {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: var(--shadow);
+    }
+    .year-photo img { width:100%; height:100%; object-fit:cover; }
+    .officers-list { list-style: none; }
+    .officers-list li {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      align-items: baseline;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 0.92rem;
+    }
+    .officers-list li:last-child { border-bottom: none; }
+    .off-role {
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+    }
+    .off-name { color: var(--gray-700); }
+
+    /* Photo placeholder */
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--gold);
+    }
+    .photo-placeholder span {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+      font-style: italic;
+    }
+
+    @media (max-width: 640px) {
+      .year-content { grid-template-columns: 1fr; }
+      .year-header { padding: 16px 20px; }
+      .year-body { padding: 20px; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main>
+
+    <header class="page-header">
+      <h1>Previous <span>Officers</span></h1>
+      <p>Honoring the leaders who built and shaped CSAP over the years</p>
+    </header>
+
+    <section class="section section-alt" aria-label="Previous officers archive">
+      <div class="section-inner">
+        <p class="section-label">Our History</p>
+        <h2 class="section-title">Officer Archive</h2>
+        <div class="section-divider"></div>
+        <p class="section-body" style="margin: 0 auto 40px; text-align:center;">Every board member who has served CSAP has contributed to making this organization what it is today. We honor their dedication and service.</p>
+
+        <!-- 2025–2026 -->
+        <div class="year-block fade-in" id="year2526">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2025–26</span>
+              <span class="year-title">Board of 2025–2026</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2025-2026.jpg" alt="2025-26 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Mateo Roldan</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Juliana Miranda</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Daniel Castro</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Karen Gutierrez</span></li>
+                <li><span class="off-role">Communication Officer</span><span class="off-name">Sergio Rubiano</span></li>
+                <li><span class="off-role">Outreach Officer</span><span class="off-name">Andres Alonso</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2024–2025 -->
+        <div class="year-block fade-in" id="year2425">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2024–25</span>
+              <span class="year-title">Board of 2024–2025</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2024-2025.jpeg" alt="2024-25 board group photo" onerror="this.outerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-image\'></i><span>Photo missing</span></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Valentina Castañeda</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Alejandra Rodriguez</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Juan Esteban Guevara</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Laura Maria Nuñez</span></li>
+                <li><span class="off-role">Web Manager</span><span class="off-name">Laura Bran</span></li>
+                <li><span class="off-role">Outreach Officer</span><span class="off-name">Clara Elisa Horta</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2023–2024 -->
+        <div class="year-block fade-in" id="year2324" style="transition-delay:0.05s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2023–24</span>
+              <span class="year-title">Board of 2023–2024</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2023-2024.jpg" alt="2023-24 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i><span>Photo coming soon</span></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Cristian Salinas</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Valentina Castañeda</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Sandra Cordoba</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Gabriel Perez</span></li>
+                <li><span class="off-role">Webmaster</span><span class="off-name">Alejandra Rodriguez</span></li>
+                <li><span class="off-role">Alumni Officer</span><span class="off-name">David Moreno</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2022–2023 -->
+        <div class="year-block fade-in" id="year2223" style="transition-delay:0.1s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2022–23</span>
+              <span class="year-title">Board of 2022–2023</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board-2022-2023.avif" alt="2022-23 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Santiago Ruiz Guzmán</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Santiago Guevara Ocaña</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Daniela Cecilia Peña Hernandez</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Sandra Victoria Gomez Gutierrez</span></li>
+                <li><span class="off-role">Webmaster</span><span class="off-name">Fabio Andres Castiblanco Rubio</span></li>
+                <li><span class="off-role">Alumni Officer</span><span class="off-name">Sandra L. Camargo Salamanca</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Dr. Adam Wasserman</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Dr. Juan D. Velazquez</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2021–2022 -->
+        <div class="year-block fade-in" id="year2122" style="transition-delay:0.15s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2021–22</span>
+              <span class="year-title">Board of 2021–2022</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2021-2022.avif" alt="2021-22 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Laura Melissa Cruz Castro</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Johan Vera</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Natalia Marulanda</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Raul Andres Pineda Mendez</span></li>
+                <li><span class="off-role">Community Manager</span><span class="off-name">Sandra Santana Ballesteros</span></li>
+                <li><span class="off-role">Alumni Officer</span><span class="off-name">Francisco Javier Peña</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Ximena Bernal</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Adam Wasserman</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2020–2021 -->
+        <div class="year-block fade-in" id="year2021" style="transition-delay:0.2s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2020–21</span>
+              <span class="year-title">Board of 2020–2021</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2020-2021.avif" alt="2020-21 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Camilo Duarte</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Ana Ulloa</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Johann Vera</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Andres Parra</span></li>
+                <li><span class="off-role">Community Manager</span><span class="off-name">Sandra Gomez</span></li>
+                <li><span class="off-role">Faculty Advisor</span><span class="off-name">Ximena Bernal</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2019–2020 -->
+        <div class="year-block fade-in" id="year1920" style="transition-delay:0.25s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2019–20</span>
+              <span class="year-title">Board of 2019–2020</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2019-2020.avif" alt="2019-20 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Oscar Ojeda</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Juan Sebastian Martinez</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Katherine Rivera</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Alejandra Agredo</span></li>
+                <li><span class="off-role">Community Manager</span><span class="off-name">Luis Enrique Garzon</span></li>
+                <li><span class="off-role">Outreach</span><span class="off-name">Jose David Ramirez</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2018–2019 -->
+        <div class="year-block fade-in" id="year1819" style="transition-delay:0.3s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2018–19</span>
+              <span class="year-title">Board of 2018–2019</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2018-2019.avif" alt="2018-19 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Johan Vera</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Vanessa Sarria</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Rathziel Roncancio</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Camilo Duarte</span></li>
+                <li><span class="off-role">Community Manager</span><span class="off-name">Daniela Castellanos</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2017–2018 -->
+        <div class="year-block fade-in" id="year1718" style="transition-delay:0.35s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2017–18</span>
+              <span class="year-title">Board of 2017–2018</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2017-2018.avif" alt="2017-18 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Lorena Alzate</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Pedro Pablo Parra</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Clara Correa Soto</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Lisa Lorena Losada</span></li>
+                <li><span class="off-role">Community Manager</span><span class="off-name">Rodrigo Rodriguez</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2016–2017 -->
+        <div class="year-block fade-in" id="year1617" style="transition-delay:0.4s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2016–17</span>
+              <span class="year-title">Board of 2016–2017</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2016-2017.avif" alt="2016-17 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Juan David Ortega</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Johan Vera</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2015–2016 -->
+        <div class="year-block fade-in" id="year1516" style="transition-delay:0.45s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2015–16</span>
+              <span class="year-title">Board of 2015–2016</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2015-2016.avif" alt="2015-16 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">David Orrego</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Andres Diaz</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Carolina Mira</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Carolina Vivas</span></li>
+                <li><span class="off-role">Webmaster &amp; Comms</span><span class="off-name">Stefan Leiva</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Adam Wasserman</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Santiago Pujol</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2014–2015 -->
+        <div class="year-block fade-in" id="year1415" style="transition-delay:0.5s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2014–15</span>
+              <span class="year-title">Board of 2014–2015</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2014-2015.avif" alt="2014-15 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Alejandro Salazar</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Camilo Viera</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Paola Olaya</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Ulianova Vidal</span></li>
+                <li><span class="off-role">Comms &amp; Webmaster</span><span class="off-name">Rosario Uribe</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Adam Wasserman</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2013–2014 -->
+        <div class="year-block fade-in" id="year1314" style="transition-delay:0.55s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2013–14</span>
+              <span class="year-title">Board of 2013–2014</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2013-2014.avif" alt="2013-14 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Andres Sandoval Mejia</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Carolina Zamorano</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Helena Avila</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Sylvia Bonilla</span></li>
+                <li><span class="off-role">Communications</span><span class="off-name">Fernando Pastrana</span></li>
+                <li><span class="off-role">Webmaster</span><span class="off-name">Daniel Mejia</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Adam Wasserman</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2012–2013 -->
+        <div class="year-block fade-in" id="year1213" style="transition-delay:0.6s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2012–13</span>
+              <span class="year-title">Board of 2012–2013</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2012-2013.avif" alt="2012-13 board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Mariana Tafur</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Ben Leonard</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Jackeline Murillo</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Lorena Torres</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2011–2012 -->
+        <div class="year-block fade-in" id="year1112" style="transition-delay:0.65s;">
+          <div class="year-header">
+            <div class="year-label">
+              <span class="year-badge">2011–12</span>
+              <span class="year-title">Board of 2011–2012 — Founding Board</span>
+            </div>
+          </div>
+          <div class="year-body">
+            <div class="year-content">
+              <div class="year-photo">
+                <img src="img/boards/csap-board2011-2012.avif" alt="2011-12 founding board group photo"
+                     onerror="this.parentElement.innerHTML='<div class=\'photo-placeholder\'><i class=\'fa-solid fa-graduation-cap\' style=\'font-size:3rem;\'></i></div>'" />
+              </div>
+              <ul class="officers-list">
+                <li><span class="off-role">President</span><span class="off-name">Jonathan Montaño</span></li>
+                <li><span class="off-role">Vice President</span><span class="off-name">Rodrigo Mesa</span></li>
+                <li><span class="off-role">Treasurer</span><span class="off-name">Katherine Ortegon</span></li>
+                <li><span class="off-role">Secretary</span><span class="off-name">Andrea Clavijo</span></li>
+                <li><span class="off-role">Advisor</span><span class="off-name">Prof. Adam Wasserman</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Fade-in on scroll (no accordion toggling — all boards visible on load)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

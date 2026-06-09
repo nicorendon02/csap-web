@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Learn about the Colombian Student Association at Purdue (CSAP), our mission, our history, and the Quimbaya logo that represents our identity." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .fade-in { opacity:0; transform:translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity:1; transform:none; }
+
+    /* Logo Section */
+    .logo-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    .logo-artifact {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      background: var(--gray-100);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+    }
+    .logo-artifact img { width:100%; height:100%; object-fit:cover; }
+
+    /* Values grid */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .value-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .value-card:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow-lg); }
+    .value-card .icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+    .value-card h3 { font-weight: 700; font-size: 1rem; color: var(--dark); margin-bottom: 8px; }
+    .value-card p { font-size: 0.88rem; color: var(--gray-500); line-height: 1.65; }
+
+    /* History timeline */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+      border-radius: 2px;
+    }
+    .timeline-item { position: relative; margin-bottom: 32px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 3px var(--gold);
+    }
+    .timeline-year {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 4px;
+    }
+    .timeline-text { font-size: 0.95rem; color: var(--gray-700); line-height: 1.7; }
+
+    @media (max-width: 768px) {
+      .logo-section { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+
+  <div id="nav-placeholder"></div>
+
+  <main>
+
+    <header class="page-header">
+      <h1>About <span>CSAP</span></h1>
+      <p>Our story, mission, and the community we build together</p>
+      <div style="margin-top: 24px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;" data-animate="up">
+        <a href="board.html" class="btn btn-gold">Meet the Board</a>
+        <a href="previous-officers.html" class="btn btn-outline" style="background: var(--white);">Previous Officers</a>
+      </div>
+    </header>
+
+    <!-- Mission -->
+    <section class="section section-alt" aria-label="Mission">
+      <div class="section-inner">
+        <p class="section-label">Our Mission</p>
+        <h2 class="section-title">Who We Are</h2>
+        <div class="section-divider"></div>
+        <div class="section-body" style="max-width:800px;">
+          <p style="margin-bottom:18px;">
+            The <strong>Colombian Student Association at Purdue (CSAP)</strong> is a student organization at Purdue University dedicated to fostering a welcoming and inclusive community for Colombian students and those interested in Colombian culture.
+          </p>
+          <p style="margin-bottom:18px;">
+            We strive to provide academic support, cultural enrichment, professional development, and a sense of belonging for our members. Through events, mentorship, and collaboration, we aim to make the Purdue experience as enriching and memorable as possible.
+          </p>
+          <p>
+            Whether you're a Colombian student navigating life abroad for the first time, or simply someone who loves Colombian culture — <strong>CSAP is your home at Purdue.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section class="section" aria-label="Our values">
+      <div class="section-inner fade-in">
+        <p class="section-label">What Drives Us</p>
+        <h2 class="section-title">Our Core Values</h2>
+        <div class="section-divider"></div>
+        <div class="values-grid">
+          <div class="value-card" id="valueCommunity">
+            <span class="icon"><i class="fa-solid fa-handshake"></i></span>
+            <h3>Community</h3>
+            <p>Creating a support network where every member feels welcomed, valued, and connected.</p>
+          </div>
+          <div class="value-card" id="valueCulture">
+            <span class="icon"><i class="fa-solid fa-flag"></i></span>
+            <h3>Culture</h3>
+            <p>Celebrating Colombian heritage through food, music, art, and traditions that bring us together.</p>
+          </div>
+          <div class="value-card" id="valueGrowth">
+            <span class="icon"><i class="fa-solid fa-rocket"></i></span>
+            <h3>Growth</h3>
+            <p>Empowering members academically, professionally, and personally throughout their Purdue journey.</p>
+          </div>
+          <div class="value-card" id="valueDiversity">
+            <span class="icon"><i class="fa-solid fa-earth-americas"></i></span>
+            <h3>Inclusion</h3>
+            <p>Welcoming all students who share an interest in Colombian culture, regardless of background.</p>
+          </div>
+          <div class="value-card" id="valueLeadership">
+            <span class="icon"><i class="fa-solid fa-star"></i></span>
+            <h3>Leadership</h3>
+            <p>Developing the next generation of Colombian leaders through meaningful opportunities.</p>
+          </div>
+          <div class="value-card" id="valueService">
+            <span class="icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+            <h3>Service</h3>
+            <p>Giving back to the Purdue community and the broader Colombian diaspora in the US.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Logo -->
+    <section class="section section-alt" aria-label="Our logo">
+      <div class="section-inner">
+        <div class="logo-section">
+          <div class="fade-in">
+            <p class="section-label">Identity</p>
+            <h2 class="section-title">Our Logo</h2>
+            <div class="section-divider"></div>
+            <p class="section-body" style="margin-bottom:20px;">
+              The CSAP logo features a stylized representation of a <strong>Quimbaya pectoral</strong> — a pre-Columbian golden artifact created by the Quimbaya civilization of Colombia around 300–1550 CE.
+            </p>
+            <p class="section-body" style="margin-bottom:20px;">
+              The Quimbaya were master goldsmiths, and their intricate golden pieces now reside in some of the world's greatest museums, including the Museo del Oro in Bogotá. By adopting this symbol, CSAP honors the rich indigenous heritage of Colombia and the country's deep connection to gold, craftsmanship, and creativity.
+            </p>
+            <p class="section-body">
+              The golden color of the emblem also reflects Purdue's gold — a bridge between our Colombian roots and our Boilermaker identity.
+            </p>
+          </div>
+          <div class="logo-artifact fade-in" style="transition-delay:0.15s;">
+            <img src="img/our_logo.avif" alt="CSAP logo artifact" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brief History -->
+    <section class="section" aria-label="History">
+      <div class="section-inner">
+        <p class="section-label">Our Journey</p>
+        <h2 class="section-title">A Brief History</h2>
+        <div class="section-divider"></div>
+        <div style="max-width:640px;" class="fade-in">
+          <div class="timeline">
+            <div class="timeline-item">
+              <p class="timeline-year">Founded</p>
+              <p class="timeline-text">CSAP was established at Purdue University by a group of passionate Colombian students who wanted to create a cultural home on campus.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">Growth</p>
+              <p class="timeline-text">The association grew steadily, organizing cultural events, academic support sessions, and forging connections with other Latinx organizations at Purdue.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">Community Impact</p>
+              <p class="timeline-text">CSAP expanded its reach through the Big Sibling Program, helping incoming Colombian students navigate life at Purdue with the guidance of experienced members.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">Today — 2025–26</p>
+              <p class="timeline-text">With a passionate board and a growing membership, CSAP continues to thrive — hosting events, supporting students, and celebrating Colombian culture every semester.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section-alt" style="text-align:center;">
+      <div class="section-inner">
+        <p class="section-label">Join the Community</p>
+        <h2 class="section-title" style="margin-bottom:16px;">Ready to be part of CSAP?</h2>
+        <p class="section-body" style="margin:0 auto 28px; text-align:center;">Become a member today and join a community that celebrates who you are.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+          <a href="join.html" class="btn btn-gold" id="aboutCtaJoin">Become a Member</a>
+          <a href="board.html" class="btn btn-outline" id="aboutCtaBoard">Meet the Board</a>
+          <a href="previous-officers.html" class="btn btn-outline" id="aboutCtaPrevOfficers">Previous Officers</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

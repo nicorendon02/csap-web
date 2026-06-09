@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found — CSAP</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    .not-found-wrap {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 64px 24px;
+    }
+    .not-found-code {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(6rem, 20vw, 10rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      opacity: 0.25;
+      margin-bottom: 8px;
+    }
+    .not-found-wrap h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: var(--dark);
+      margin-bottom: 14px;
+    }
+    .not-found-wrap p {
+      color: var(--gray-500);
+      font-size: 1rem;
+      max-width: 420px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+  </style>
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+</head>
+<body>
+  <div id="nav-placeholder"></div>
+  <main>
+    <div class="not-found-wrap">
+      <div class="not-found-code">404</div>
+      <h1>Page Not Found</h1>
+      <p>The page you're looking for doesn't exist or may have been moved. Let's get you back on track.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+        <a href="/" class="btn btn-gold"><i class="fa-solid fa-house"></i> Go Home</a>
+        <a href="/events" class="btn btn-outline">See Events</a>
+        <a href="/join" class="btn btn-outline">Join CSAP</a>
+      </div>
+    </div>
+  </main>
+  <div id="footer-placeholder"></div>
+  <script src="/js/components.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
