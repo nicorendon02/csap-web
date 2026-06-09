@@ -195,6 +195,7 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, rgba(194,154,18,0.08) 0%, transparent 60%);
+  pointer-events: none;
 }
 .page-header h1 {
   font-family: 'Plus Jakarta Sans', sans-serif;

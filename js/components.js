@@ -182,11 +182,16 @@
     if (!href || href.startsWith('#') || href.startsWith('mailto:') ||
         href.startsWith('http') || link.target === '_blank') return;
     e.preventDefault();
+    let navigated = false;
+    const navigate = () => {
+      if (navigated) return;
+      navigated = true;
+      window.location.href = href;
+    };
     document.documentElement.style.opacity = '0';
-    setTimeout(() => { window.location.href = href; }, 220);
+    document.documentElement.addEventListener('transitionend', navigate, { once: true });
+    // Fallback: always navigate even if transition never fires
+    setTimeout(navigate, 300);
   });
 
 })();
-
-
-

@@ -43,7 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
 
-  document.querySelectorAll('[data-animate]').forEach(el => animObserver.observe(el));
+  document.querySelectorAll('[data-animate]').forEach(el => {
+    animObserver.observe(el);
+    // If already in viewport on load, mark visible immediately
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      el.classList.add('is-visible');
+      animObserver.unobserve(el);
+    }
+  });
 
   // ── Legacy .fade-in support ─────────────────────────
   const fadeObserver = new IntersectionObserver((entries) => {
