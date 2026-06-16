@@ -1,30 +1,34 @@
 <?php
 // =====================================================
 // CSAP — get-members.php
-// JSON endpoint: returns member list for admin table
+// Returns the full user list as JSON.
+// GET /php/get-members.php
+//
+// Access: admin, superuser, user  (all authenticated users)
 // =====================================================
-session_start();
 header('Content-Type: application/json');
+require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/db-config.php';
 
-// Auth check — only board members can access
-if (empty($_SESSION['member_id']) || $_SESSION['member_role'] !== 'board') {
-    http_response_code(403);
-    echo json_encode(['error' => 'Unauthorized.']);
-    exit;
-}
+// All authenticated roles may list users
+requireLogin(true);
 
 try {
     $db   = getDB();
-    $stmt = $db->query('
-        SELECT id, name, email, role, status, is_active as `active`,
-               DATE_FORMAT(joined_at, "%Y-%m-%d") as joined
-        FROM csap_members
-        ORDER BY joined_at DESC
-    ');
-    $members = $stmt->fetchAll();
-    echo json_encode($members);
+    $stmt = $db->query(
+        'SELECT
+             id,
+             name,
+             email,
+             role,
+             status,
+             DATE_FORMAT(created_at, "%Y-%m-%d") AS joined,
+             DATE_FORMAT(last_login,  "%d %b %Y")  AS last_login
+         FROM csap_users
+         ORDER BY created_at DESC'
+    );
+    echo json_encode($stmt->fetchAll());
 } catch (\Exception $e) {
     http_response_code(500);
-    echo json_encode(['error' => 'Could not fetch members.']);
+    echo json_encode(['error' => 'Could not fetch users.']);
 }

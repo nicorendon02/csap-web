@@ -1,53 +1,81 @@
 <?php
 // =====================================================
 // CSAP — login.php
-// Session-based login handler for Hostinger
+// Authenticates a user and starts a PHP session.
+// POST params: username (email), password
 // =====================================================
-session_start();
-header('Content-Type: application/json');
 require_once __DIR__ . '/db-config.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed.']);
+// Start session (auth.php also calls session_start, so we do it here manually
+// since this is the login endpoint that creates the session).
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Already logged in? Send straight to dashboard.
+if (!empty($_SESSION['user_id'])) {
+    header('Location: ../members.html');
     exit;
 }
 
-$username = trim($_POST['username'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ../login.html');
+    exit;
+}
+
+$email    = trim($_POST['username'] ?? '');   // field is named "username" in the form
 $password = $_POST['password'] ?? '';
 
-if (empty($username) || empty($password)) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Username and password are required.']);
+// ── Basic validation ──────────────────────────────────
+if (empty($email) || empty($password)) {
+    header('Location: ../login.html?error=empty');
     exit;
 }
 
+// ── Look up user ──────────────────────────────────────
 try {
-    $db  = getDB();
-    $stmt = $db->prepare('SELECT * FROM csap_members WHERE email = ? AND status = "active" LIMIT 1');
-    $stmt->execute([$username]);
-    $member = $stmt->fetch();
-
-    if ($member && password_verify($password, $member['password'])) {
-        // Regenerate session to prevent fixation
-        session_regenerate_id(true);
-        $_SESSION['member_id']   = $member['id'];
-        $_SESSION['member_name'] = $member['name'];
-        $_SESSION['member_role'] = $member['role'];
-
-        // Redirect to admin dashboard
-        header('Content-Type: text/html');
-        header('Location: ../members.html');
-        exit;
-    } else {
-        http_response_code(401);
-        // Redirect back with error flag
-        header('Content-Type: text/html');
-        header('Location: ../login.html?error=1');
-        exit;
-    }
+    $db   = getDB();
+    $stmt = $db->prepare(
+        'SELECT id, name, email, password_hash, role, status
+         FROM csap_users
+         WHERE email = ?
+         LIMIT 1'
+    );
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
 } catch (\Exception $e) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Server error. Please try again later.']);
+    header('Location: ../login.html?error=server');
     exit;
 }
+
+// ── Verify credentials ────────────────────────────────
+if (!$user || !password_verify($password, $user['password_hash'])) {
+    // Generic message — don't reveal whether the email exists
+    header('Location: ../login.html?error=invalid');
+    exit;
+}
+
+// ── Check account status ──────────────────────────────
+if ($user['status'] !== 'active') {
+    header('Location: ../login.html?error=inactive');
+    exit;
+}
+
+// ── Establish session ─────────────────────────────────
+// Regenerate ID to prevent session-fixation attacks.
+session_regenerate_id(true);
+
+$_SESSION['user_id']   = (int) $user['id'];
+$_SESSION['user_name'] = $user['name'];
+$_SESSION['user_email']= $user['email'];
+$_SESSION['user_role'] = $user['role'];   // 'admin' | 'superuser' | 'user'
+
+// ── Update last_login timestamp ───────────────────────
+try {
+    $db->prepare('UPDATE csap_users SET last_login = NOW() WHERE id = ?')
+       ->execute([$user['id']]);
+} catch (\Exception $e) { /* non-critical — continue */ }
+
+// ── Redirect to dashboard ─────────────────────────────
+header('Location: ../members.html');
+exit;

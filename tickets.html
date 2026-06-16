@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download My Ticket — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="Download your CSAP event ticket PDF. Enter your PUID and select your event." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- jsPDF + QRCode for ticket generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0d1b2a 0%, #1a3a5c 50%, #0d2137 100%);
+      display: flex; flex-direction: column;
+    }
+
+    .ticket-page {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 60px 20px; position: relative; overflow: hidden;
+    }
+    .ticket-page::before {
+      content:''; position:absolute; inset:0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(194,154,18,.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0,48,135,.3) 0%, transparent 40%),
+        radial-gradient(circle at 60% 80%, rgba(206,17,38,.15) 0%, transparent 40%);
+    }
+
+    .flag-strip {
+      display:flex; height:5px; width:100%; position:fixed; top:0; left:0; z-index:100;
+    }
+    .flag-strip .s-yellow { flex:2; background:var(--col-yellow,#c29a12); }
+    .flag-strip .s-blue   { flex:1; background:var(--col-blue,#003087); }
+    .flag-strip .s-red    { flex:1; background:var(--col-red,#CE1126); }
+
+    .ticket-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 20px; padding: 48px 44px;
+      width: 100%; max-width: 460px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.45);
+      position: relative; z-index: 1;
+    }
+
+    .tc-logo {
+      display:flex; align-items:center; gap:10px;
+      font-weight:700; font-size:1.2rem; color:var(--dark);
+      margin-bottom:24px; justify-content:center;
+    }
+    .tc-emblem {
+      width:42px; height:42px; background:var(--gold,#c29a12);
+      border-radius:50%; display:flex; align-items:center; justify-content:center;
+    }
+    .tc-title {
+      font-family:'Playfair Display',serif;
+      font-size:1.6rem; font-weight:700; color:var(--dark);
+      text-align:center; margin-bottom:6px;
+    }
+    .tc-sub {
+      font-size:0.87rem; color:var(--gray-500);
+      text-align:center; margin-bottom:32px;
+    }
+
+    .form-group { margin-bottom:20px; }
+    .form-label {
+      display:block; font-size:0.82rem; font-weight:600;
+      color:var(--gray-700); margin-bottom:6px; letter-spacing:.3px;
+    }
+    .form-input {
+      width:100%; padding:12px 16px;
+      border:1.5px solid var(--border); border-radius:var(--radius);
+      font-family:'Inter',sans-serif; font-size:0.95rem; color:var(--dark);
+      background:var(--cream); transition:border-color var(--transition); outline:none;
+    }
+    .form-input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(194,154,18,.13); background:#fff; }
+    select.form-input { cursor:pointer; }
+
+    .btn-download {
+      width:100%; padding:14px; background:var(--gold,#c29a12);
+      color:#fff; border:none; border-radius:999px;
+      font-family:'Inter',sans-serif; font-size:1rem; font-weight:700;
+      cursor:pointer; transition:all var(--transition); letter-spacing:.3px;
+    }
+    .btn-download:hover { background:var(--gold-dark,#9a7600); transform:translateY(-1px); box-shadow:0 4px 16px rgba(194,154,18,.35); }
+    .btn-download:disabled { opacity:.55; cursor:default; transform:none; }
+
+    .back-link { display:flex; justify-content:center; margin-top:20px; }
+    .back-link a { font-size:0.85rem; color:var(--gold-dark,#9a7600); font-weight:600; text-decoration:none; }
+    .back-link a:hover { text-decoration:underline; }
+
+    .puid-hint { font-size:0.74rem; margin-top:4px; transition:color .2s; }
+    .puid-hint.warn  { color:#dc2626; }
+    .puid-hint.ok    { color:#16a34a; }
+  </style>
+</head>
+<body>
+
+  <div class="flag-strip">
+    <div class="s-yellow"></div><div class="s-blue"></div><div class="s-red"></div>
+  </div>
+
+  <div class="ticket-page">
+    <div class="ticket-card">
+
+      <div class="tc-logo">
+        <div class="tc-emblem"><i class="fa-solid fa-coins" style="color:#fff;font-size:1.2rem;"></i></div>
+        <span>CSAP</span>
+      </div>
+
+      <h1 class="tc-title">Download My Ticket</h1>
+      <p class="tc-sub">Enter your PUID and select the event to retrieve your ticket PDF.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="dlEvent">Event</label>
+        <select class="form-input" id="dlEvent">
+          <option value="">Loading events…</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="dlPuid">Your Purdue ID (PUID)</label>
+        <input class="form-input" type="text" id="dlPuid" inputmode="numeric"
+               maxlength="10" placeholder="0000000000"
+               oninput="onPuidInput(this)" />
+        <p class="puid-hint" id="dlPuidHint"></p>
+      </div>
+
+      <button class="btn-download" id="dlBtn" onclick="downloadTicket()">
+        <i class="fa-solid fa-download"></i> Download Ticket
+      </button>
+
+      <div class="back-link">
+        <a href="events.html">← Back to Events</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" onerror="this.remove()"></script>
+  <script src="js/pdf-ticket.js"></script>
+  <script src="js/ticket-download.js"></script>
+</body>
+</html>

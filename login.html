@@ -221,7 +221,7 @@
       </div>
 
       <!-- Form posts to PHP — stub ready for Hostinger -->
-      <form id="loginForm" action="php/login.php" method="POST" onsubmit="return handleLogin(event)">
+      <form id="loginForm" action="php/login.php" method="POST">
         <div class="form-group">
           <label class="form-label" for="loginUsername">Username or Email</label>
           <input class="form-input" type="text" id="loginUsername" name="username"
@@ -252,32 +252,29 @@
   </div>
 
   <script>
-    // Placeholder login handler — replace with real PHP session when ready
-    function handleLogin(e) {
-      // When php/login.php is live, remove this function and let the form submit normally.
-      // For now, show a friendly message.
-      e.preventDefault();
-      const user = document.getElementById('loginUsername').value.trim();
-      const pass = document.getElementById('loginPassword').value;
-      const errEl = document.getElementById('loginError');
+    // Read ?error= from URL and show the appropriate message
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const code   = params.get('error');
+      if (!code) return;
 
-      if (!user || !pass) {
-        errEl.textContent = 'Please enter your username and password.';
+      const messages = {
+        invalid : 'Incorrect email or password. Please try again.',
+        empty   : 'Please enter your email and password.',
+        inactive: 'Your account is not active. Contact an administrator.',
+        session : 'Your session has expired. Please sign in again.',
+        server  : 'A server error occurred. Please try again later.',
+      };
+
+      const errEl = document.getElementById('loginError');
+      if (errEl) {
+        errEl.textContent = messages[code] || 'Login failed. Please try again.';
         errEl.style.display = 'block';
-        return false;
       }
 
-      // TODO: Replace with real auth — redirect to members.html after PHP session set
-      errEl.style.display = 'none';
-      document.getElementById('loginSubmitBtn').textContent = 'Signing in…';
-      document.getElementById('loginSubmitBtn').disabled = true;
-
-      setTimeout(() => {
-        // Simulate redirect to members dashboard
-        window.location.href = 'members.html';
-      }, 1200);
-      return false;
-    }
+      // Clean the URL so a page refresh doesn't re-show the error
+      history.replaceState(null, '', window.location.pathname);
+    })();
   </script>
 </body>
 </html>

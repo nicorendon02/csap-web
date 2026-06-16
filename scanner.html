@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scan Tickets — CSAP Portal</title>
+  <meta name="description" content="CSAP admin QR ticket scanner for event check-in." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- html5-qrcode -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <style>
+    .scanner-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #f0ede7;
+    }
+    .scanner-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 0 24px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .scanner-header .s-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 1.1rem; color: var(--dark);
+    }
+    .scanner-main {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 32px 20px; gap: 20px;
+    }
+    .scanner-controls {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px;
+      width: 100%; max-width: 520px;
+      box-shadow: var(--shadow);
+    }
+    .scanner-controls label {
+      display: block;
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--gray-700); margin-bottom: 8px;
+      letter-spacing: .5px; text-transform: uppercase;
+    }
+    .scanner-select {
+      width: 100%; padding: 11px 14px;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--dark);
+      font-family: 'Inter', sans-serif; font-size: 0.93rem;
+      outline: none; cursor: pointer;
+      transition: border-color .2s;
+    }
+    .scanner-select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(194,154,18,.12); }
+
+    .scanner-viewport {
+      width: 100%; max-width: 520px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    #qr-reader { width: 100%; border-radius: 16px; overflow: hidden; }
+    #qr-reader video { border-radius: 16px; }
+
+    .scanner-status {
+      width: 100%; max-width: 520px;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-size: 0.87rem; font-weight: 500;
+      display: flex; align-items: center; gap: 10px;
+      transition: all .3s;
+    }
+    .status-idle     { background: var(--white); color: var(--gray-500); border: 1px solid var(--border); }
+    .status-scanning { background: #e8f0ff; color: #003087; border: 1px solid #c0d0ff; }
+    .status-found    { background: #e6f9f0; color: #15803d; border: 1px solid #bbf0d5; }
+    .status-error    { background: #fff0f0; color: #dc2626; border: 1px solid #fecaca; }
+
+    .btn-scanner {
+      padding: 11px 26px; border-radius: 999px;
+      font-family: 'Inter', sans-serif; font-size: 0.92rem;
+      font-weight: 700; cursor: pointer; transition: all .2s;
+      border: none; display: flex; align-items: center; gap: 8px;
+    }
+    .btn-start { background: var(--gold); color: #fff; }
+    .btn-start:hover { background: var(--gold-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(194,154,18,.3); }
+    .btn-stop  { background: #fee2e2; color: #dc2626; border: 1.5px solid #fecaca; }
+    .btn-stop:hover  { background: #dc2626; color: #fff; }
+
+    /* Full-screen green check-in overlay */
+    #checkinOverlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: linear-gradient(135deg, #15803d 0%, #16a34a 60%, #22c55e 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer;
+      animation: overlayIn .4s cubic-bezier(.34,1.2,.64,1);
+    }
+    @keyframes overlayIn { from{opacity:0;transform:scale(1.05)} to{opacity:1;transform:scale(1)} }
+    .checkin-icon {
+      font-size: 5rem; color: #fff;
+      margin-bottom: 16px;
+      animation: popBounce .5s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popBounce { from{transform:scale(0)} to{transform:scale(1)} }
+    .checkin-title  { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .checkin-name   { font-size: 1.5rem; font-weight: 700; color: rgba(255,255,255,.92); margin-bottom: 4px; }
+    .checkin-detail { font-size: 0.95rem; color: rgba(255,255,255,.7); margin-bottom: 2px; }
+    .checkin-dismiss { font-size: 0.82rem; color: rgba(255,255,255,.5); margin-top: 32px; letter-spacing: .5px; }
+    .checkin-chips { display: flex; gap: 10px; margin-top: 14px; }
+    .checkin-chip {
+      padding: 5px 16px; border-radius: 999px; font-size: 0.82rem;
+      font-weight: 700; background: rgba(255,255,255,.2); color: #fff;
+      border: 1px solid rgba(255,255,255,.35);
+      display: flex; align-items: center; gap: 6px;
+    }
+  </style>
+</head>
+<body class="scanner-page">
+
+  <!-- Header -->
+  <header class="scanner-header">
+    <div class="s-logo">
+      <div style="width:32px;height:32px;background:var(--gold);border-radius:50%;
+                  display:flex;align-items:center;justify-content:center;">
+        <i class="fa-solid fa-coins" style="color:#fff;font-size:1rem;"></i>
+      </div>
+      <span>CSAP</span>
+      <span style="font-size:0.75rem;font-weight:500;color:var(--gray-500);
+                   background:var(--cream);padding:3px 10px;border-radius:999px;
+                   border:1px solid var(--border);">
+        Ticket Scanner
+      </span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span id="scannerUserName" style="font-size:0.82rem;color:var(--gray-500);"></span>
+      <a href="members.html" class="btn btn-outline" style="padding:7px 14px;font-size:0.8rem;">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+      <a href="php/logout.php" style="font-size:0.8rem;color:var(--gray-300);text-decoration:none;">Logout</a>
+    </div>
+  </header>
+
+  <main class="scanner-main">
+
+    <!-- Event selector -->
+    <div class="scanner-controls">
+      <label for="scanEventSelect">Select Event to Scan</label>
+      <select class="scanner-select" id="scanEventSelect">
+        <option value="">Loading events…</option>
+      </select>
+    </div>
+
+    <!-- Camera viewport -->
+    <div class="scanner-viewport">
+      <div id="qr-reader"></div>
+    </div>
+
+    <!-- Status bar -->
+    <div class="scanner-status status-idle" id="scanStatus">
+      <i class="fa-solid fa-circle-info"></i>
+      Select an event and start the scanner.
+    </div>
+
+    <!-- Start / Stop buttons -->
+    <div style="display:flex;gap:14px;">
+      <button class="btn-scanner btn-start" id="startBtn" onclick="startScanner()">
+        <i class="fa-solid fa-camera"></i> Start Scanner
+      </button>
+      <button class="btn-scanner btn-stop" id="stopBtn" onclick="stopScanner()" style="display:none;">
+        <i class="fa-solid fa-stop"></i> Stop
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Full-screen check-in overlay (hidden by default) -->
+  <div id="checkinOverlay" style="display:none;" onclick="dismissOverlay()">
+    <div class="checkin-icon">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div class="checkin-title">Check-in Successful!</div>
+    <div class="checkin-name" id="overlayName"></div>
+    <div class="checkin-detail" id="overlayPuid"></div>
+    <div class="checkin-detail" id="overlayGuests"></div>
+    <div class="checkin-chips" id="overlayChips"></div>
+    <div class="checkin-dismiss">Tap anywhere to continue scanning</div>
+  </div>
+
+  <script src="js/scanner.js"></script>
+</body>
+</html>

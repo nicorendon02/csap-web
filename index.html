@@ -173,27 +173,51 @@
       margin-right: auto;
     }
     .event-card {
-      background: var(--cream);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 24px;
+      padding: 0;
+      overflow: hidden;
+      display: flex; flex-direction: column;
       transition: all var(--transition);
+      box-shadow: var(--shadow);
     }
-    .event-card:hover { background: var(--white); border-color: var(--gold); box-shadow: var(--shadow); }
+    .event-card:hover { border-color: var(--gold); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+    .event-card-top {
+      padding: 20px 20px 14px;
+      flex: 1;
+    }
+    .event-card-meta {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .event-cat-badge {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: 999px; background: var(--gold-bg);
+      color: var(--gold-dark); border: 1px solid #efe5c7;
+    }
+    .event-reg-open   { font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:999px;
+                        background:#e6f9f0;color:#15803d;border:1px solid #bbf0d5; }
+    .event-reg-closed { font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:999px;
+                        background:#fff0f0;color:#dc2626;border:1px solid #fecaca; }
     .event-date {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--white);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--gray-500); margin-bottom: 5px;
     }
-    .event-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
-    .event-card p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
+    .event-loc {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.78rem; color: var(--gray-300); margin-bottom: 10px;
+    }
+    .event-card h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; line-height: 1.4; }
+    .event-card p  { font-size: 0.84rem; color: var(--gray-500); line-height: 1.6;
+                     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+    .event-card-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: flex-end;
+    }
 
     /* ── Gallery Preview ──────────────────────────────── */
     .gallery-grid {
@@ -654,16 +678,19 @@
         <h2 class="section-title" data-animate="up" style="transition-delay:0.1s;">Upcoming Events</h2>
         <div class="section-divider" data-animate="scale" style="transition-delay:0.2s;"></div>
       </div>
-      <!-- Empty state -->
+      <!-- Empty state: visible by default, hidden when events load -->
       <div id="indexEventsEmpty" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 60px 24px; text-align:center;">
         <i class="fa-solid fa-calendar" style="font-size: 4rem; color: #d5d5d5; margin-bottom: 24px;"></i>
         <p style="font-size: 1.05rem; font-weight: 600; color: #aaa; margin-bottom: 8px;">No upcoming events right now</p>
         <p style="font-size: 0.9rem; color: #bbb; max-width: 340px; line-height: 1.7;">Stay tuned — we'll announce new events soon!</p>
       </div>
       <!-- Events grid -->
-      <div class="events-grid fade-in" id="indexEventsGrid" style="display:none;"></div>
-      <div id="indexEventsFooter" style="text-align:center; margin-top:36px; display:none;">
-        <a href="events.html" class="btn btn-outline" id="allEventsBtn">View All Events →</a>
+      <div class="events-grid" id="indexEventsGrid" style="display:none;"></div>
+      <div id="indexEventsFooter" style="text-align:center; margin-top:36px;">
+        <a href="events.html" class="btn btn-gold" id="allEventsBtn"
+           style="display:inline-flex;align-items:center;gap:8px;padding:13px 32px;font-size:0.95rem;">
+          <i class="fa-solid fa-calendar-star"></i> View All Events
+        </a>
       </div>
     </section>
 
@@ -767,37 +794,8 @@
 
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/events-data.js"></script>
-  <script>
-    (function renderIndexEvents() {
-      const empty  = document.getElementById('indexEventsEmpty');
-      const grid   = document.getElementById('indexEventsGrid');
-      const footer = document.getElementById('indexEventsFooter');
+  <script src="js/index-events.js"></script>
 
-      if (!CSAP_EVENTS || CSAP_EVENTS.length === 0) {
-        // Show empty state, hide grid
-        empty.style.display  = 'flex';
-        grid.style.display   = 'none';
-        footer.style.display = 'none';
-        return;
-      }
-
-      // Show grid, hide empty state
-      empty.style.display  = 'none';
-      grid.style.display   = '';
-      footer.style.display = '';
-
-      const preview = CSAP_EVENTS.slice(0, 3);
-      grid.innerHTML = preview.map(e => `
-        <div class="event-card">
-          <span class="event-date">${e.date || 'Date TBD'}</span>
-          <h3>${e.title}</h3>
-          <p>${e.description}</p>
-        </div>`).join('');
-
-      requestAnimationFrame(() => grid.classList.add('visible'));
-    })();
-  </script>
 
   <!-- Podcast Widget JS — YouTube Data API v3 with 24h cache -->
   <script>

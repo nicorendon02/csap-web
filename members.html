@@ -3,26 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Members — CSAP Admin Dashboard</title>
-  <meta name="description" content="CSAP admin dashboard for managing members." />
+  <title>Portal — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="CSAP admin portal — manage events, tickets, and check-ins." />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
 </head>
 <body class="admin-body">
 
-  <!-- Admin Top Bar -->
+  <!-- Top Bar -->
   <header class="admin-header">
     <div class="admin-header-inner">
       <div class="admin-logo">
-        <div class="logo-emblem" style="background:var(--gold);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;"><i class="fa-solid fa-coins" style="color:#fff; font-size:1.1rem;"></i></div>
+        <div class="logo-emblem" style="background:var(--gold);border-radius:50%;width:34px;height:34px;
+             display:flex;align-items:center;justify-content:center;">
+          <i class="fa-solid fa-coins" style="color:#fff;font-size:1.1rem;"></i>
+        </div>
         <span>CSAP</span>
-        <span class="admin-badge">Admin</span>
+        <span class="admin-badge" id="roleBadge" style="display:none;"></span>
       </div>
       <div class="admin-header-right">
-        <span class="admin-user"><i class="fa-solid fa-user"></i> Board Member</span>
-        <a href="index.html" class="btn btn-outline" style="padding:7px 16px; font-size:0.82rem;">← Website</a>
-        <a href="login.html" class="btn btn-dark" style="padding:7px 16px; font-size:0.82rem;" id="adminLogoutBtn">Logout</a>
+        <span class="admin-user"><i class="fa-solid fa-user"></i> <span id="headerUserName">…</span></span>
+        <a href="index.html" class="btn btn-outline" style="padding:7px 16px;font-size:0.82rem;">← Website</a>
+        <a href="php/logout.php" class="btn btn-dark" style="padding:7px 16px;font-size:0.82rem;">Logout</a>
       </div>
     </div>
     <div class="flag-stripe" style="height:4px;">
@@ -35,17 +38,17 @@
     <!-- Sidebar -->
     <aside class="admin-sidebar">
       <nav>
-        <p class="sidebar-section-label">Dashboard</p>
-        <a href="members.html" class="sidebar-link active" id="sidebarMembers">
-          <span><i class="fa-solid fa-users"></i></span> Members
-        </a>
-        <a href="#" class="sidebar-link" id="sidebarEvents">
+        <p class="sidebar-section-label">Portal</p>
+        <a href="members.html" class="sidebar-link active" id="sidebarEvents">
           <span><i class="fa-solid fa-calendar-days"></i></span> Events
         </a>
-        <a href="#" class="sidebar-link" id="sidebarAnnouncements">
-          <span><i class="fa-solid fa-bullhorn"></i></span> Announcements
+        <a href="scanner.html" class="sidebar-link manage-only" id="sidebarScanner" style="display:none;">
+          <span><i class="fa-solid fa-qrcode"></i></span> Scan Tickets
         </a>
-        <p class="sidebar-section-label" style="margin-top:20px;">Settings</p>
+        <p class="sidebar-section-label" style="margin-top:20px;">Admin</p>
+        <a href="members.html?tab=users" class="sidebar-link" id="sidebarUsers">
+          <span><i class="fa-solid fa-users"></i></span> Users
+        </a>
         <a href="#" class="sidebar-link" id="sidebarProfile">
           <span><i class="fa-solid fa-gear"></i></span> Settings
         </a>
@@ -53,130 +56,309 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="admin-main">
+    <main class="admin-main" id="mainContent">
 
-      <!-- Stats -->
-      <div class="admin-stats-row">
-        <div class="stat-card" id="statTotal">
-          <p class="stat-num" id="statTotalNum">—</p>
-          <p class="stat-label">Total Members</p>
-        </div>
-        <div class="stat-card" id="statActive">
-          <p class="stat-num" style="color:#16a34a;" id="statActiveNum">—</p>
-          <p class="stat-label">Active</p>
-        </div>
-        <div class="stat-card" id="statPending">
-          <p class="stat-num" style="color:var(--gold);" id="statPendingNum">—</p>
-          <p class="stat-label">Pending</p>
-        </div>
-        <div class="stat-card" id="statSuspended">
-          <p class="stat-num" style="color:#dc2626;" id="statSuspendedNum">—</p>
-          <p class="stat-label">Suspended</p>
-        </div>
-      </div>
+      <!-- ══ EVENTS VIEW (default) ══ -->
+      <div id="viewEvents">
 
-      <!-- Toolbar -->
-      <div class="admin-toolbar">
-        <div class="toolbar-left">
-          <h1 class="admin-page-title">Active members</h1>
-          <p style="font-size:0.82rem; color:var(--gray-500); margin-top:2px;">All Users: <strong id="statTotalCount">—</strong> &nbsp; Projects: <strong>884</strong> <span style="opacity:0.5;">ⓘ</span></p>
+        <!-- Action bar -->
+        <div class="admin-toolbar">
+          <div class="toolbar-left" style="gap:10px;">
+            <h1 class="admin-page-title">Events</h1>
+          </div>
+          <div class="toolbar-right">
+            <a href="scanner.html" class="btn btn-outline manage-only"
+               id="scanBtn" style="display:none;font-size:0.85rem;padding:9px 18px;">
+              <i class="fa-solid fa-qrcode"></i> Scan Tickets
+            </a>
+            <button class="btn btn-gold manage-only" id="createEventBtn"
+                    style="display:none;font-size:0.85rem;padding:9px 18px;"
+                    onclick="openCreateModal()">
+              <i class="fa-solid fa-plus"></i> Create Event
+            </button>
+          </div>
         </div>
-        <div class="toolbar-right">
-          <span style="font-size:0.82rem; color:var(--gray-500); margin-right:4px;">Table settings <i class="fa-solid fa-gear"></i></span>
-        </div>
-      </div>
-      <div class="admin-toolbar" style="margin-top:0; margin-bottom:16px;">
-        <div class="toolbar-left">
-          <button class="btn btn-gold" onclick="showAddModal()" id="addMemberBtn" style="padding:8px 16px; font-size:0.82rem;">+ Add new user</button>
-        </div>
-        <div class="toolbar-right">
-          <input type="search" class="admin-search" id="memberSearch"
-                 placeholder=" Search members…" oninput="filterMembers()" />
-          <select class="admin-select" id="roleFilter" onchange="filterMembers()">
-            <option value="">All Roles</option>
-            <option value="board">Board</option>
-            <option value="member">Member</option>
-            <option value="alumni">Alumni</option>
-          </select>
-          <select class="admin-select" id="statusFilter" onchange="filterMembers()">
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-            <option value="suspended">Suspended</option>
-          </select>
-          <button class="action-btn" onclick="alert('Suspend all pending?')">Suspend all</button>
-          <button class="action-btn" onclick="alert('Archive all inactive?')">Archive all</button>
-          <button class="action-btn danger" onclick="alert('Delete all suspended?')">Delete all</button>
-        </div>
-      </div>
 
-      <!-- Table -->
-      <div class="admin-table-wrap">
-        <table class="admin-table" id="membersTable">
-          <thead>
-            <tr>
-              <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" /></th>
-              <th>USER</th>
-              <th>USER ROLE</th>
-              <th>STATUS</th>
-              <th>SOCIAL PROFILE</th>
-              <th>PROMOTE</th>
-              <th>RATING</th>
-              <th>LAST LOGIN</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="membersTableBody">
-            <!-- Populated by JS -->
-          </tbody>
-        </table>
-      </div>
+        <!-- Stats row -->
+        <div class="admin-stats-row" style="grid-template-columns:repeat(4,1fr);">
+          <div class="stat-card">
+            <p class="stat-num" id="statTotalEvents">—</p>
+            <p class="stat-label">Total Events</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-num" style="color:#16a34a;" id="statActiveEvents">—</p>
+            <p class="stat-label">Active</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-num" style="color:var(--gold);" id="statTotalReg">—</p>
+            <p class="stat-label">Registrations</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-num" style="color:#003087;" id="statCheckedIn">—</p>
+            <p class="stat-label">Checked In</p>
+          </div>
+        </div>
 
-      <!-- Pagination -->
-      <div class="admin-pagination" id="pagination"></div>
+        <!-- Event cards grid -->
+        <div id="eventsGrid" class="dash-events-grid">
+          <div class="dash-loading">
+            <i class="fa-solid fa-spinner fa-spin"></i> Loading events…
+          </div>
+        </div>
+
+      </div><!-- /viewEvents -->
+
+
+      <!-- ══ USERS VIEW (tab=users) ══ -->
+      <div id="viewUsers" style="display:none;">
+        <div class="admin-toolbar">
+          <div class="toolbar-left" style="gap:10px;">
+            <h1 class="admin-page-title">Users</h1>
+          </div>
+          <div class="toolbar-right">
+            <input type="search" class="admin-search" id="memberSearch"
+                   placeholder=" Search users…" oninput="filterMembers()" />
+            <select class="admin-select" id="roleFilter" onchange="filterMembers()">
+              <option value="">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="superuser">Superuser</option>
+              <option value="user">User</option>
+            </select>
+            <button class="btn btn-gold manage-only" id="addUserBtn"
+                    style="display:none;font-size:0.85rem;padding:9px 18px;"
+                    onclick="showAddModal()">
+              <i class="fa-solid fa-plus"></i> Add User
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="membersTable">
+            <thead>
+              <tr>
+                <th>USER</th><th>ROLE</th><th>STATUS</th>
+                <th>JOINED</th><th>LAST LOGIN</th>
+                <th id="actionsHeader"></th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody">
+              <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-500);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="admin-pagination" id="pagination"></div>
+      </div><!-- /viewUsers -->
 
     </main>
+  </div><!-- /admin-layout -->
+
+
+  <!-- ══ Create / Edit Event Modal ══ -->
+  <div class="modal-overlay" id="eventModal" style="display:none;">
+    <div class="ev-modal-card">
+
+      <!-- Modal header -->
+      <div class="ev-modal-head">
+        <div class="ev-modal-head-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+        <div>
+          <h2 class="ev-modal-title" id="eventModalTitle">Create Event</h2>
+          <p class="ev-modal-subtitle">Fill in the event details below</p>
+        </div>
+        <button onclick="closeEventModal()" class="ev-modal-close" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="eventForm" onsubmit="submitEventForm(event)" class="ev-modal-body">
+        <input type="hidden" id="eventId" value="" />
+
+        <!-- Section: Event Details -->
+        <div class="ev-section-label"><i class="fa-solid fa-circle-info"></i> Event Details</div>
+
+        <div class="ev-field-row">
+          <div class="ev-field ev-field-full">
+            <label class="ev-label" for="evTitle">Event Title <span class="ev-required">*</span></label>
+            <input class="ev-input" type="text" id="evTitle" required
+                   placeholder="e.g. Noche Colombiana 2025" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="ev-field-row">
+          <div class="ev-field ev-field-full">
+            <label class="ev-label" for="evDescription">Description</label>
+            <textarea class="ev-input ev-textarea" id="evDescription" rows="3"
+                      placeholder="What's happening at this event?"></textarea>
+          </div>
+        </div>
+
+        <div class="ev-field-row">
+          <div class="ev-field">
+            <label class="ev-label" for="evCategory">Category</label>
+            <select class="ev-input" id="evCategory">
+              <option value="social">Social</option>
+              <option value="cultural">Cultural</option>
+              <option value="academic">Academic</option>
+              <option value="food">Food</option>
+              <option value="professional">Professional</option>
+              <option value="fundraiser">Fundraiser</option>
+            </select>
+          </div>
+          <div class="ev-field">
+            <label class="ev-label" for="evStatus">Status</label>
+            <select class="ev-input" id="evStatus">
+              <option value="active">Active</option>
+              <option value="closed">Closed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ev-field-row">
+          <div class="ev-field ev-field-full">
+            <label class="ev-label" for="evLocation">
+              <i class="fa-solid fa-location-dot"></i> Location
+            </label>
+            <input class="ev-input" type="text" id="evLocation"
+                   placeholder="e.g. Purdue Memorial Union" />
+          </div>
+        </div>
+
+        <!-- Section: Date & Time -->
+        <div class="ev-section-label" style="margin-top:8px;">
+          <i class="fa-solid fa-clock"></i> Date &amp; Time
+          <span class="ev-tz-note">Indianapolis, IN (ET)</span>
+        </div>
+
+        <div class="ev-field-row">
+          <div class="ev-field">
+            <label class="ev-label" for="evDate">Event Date &amp; Time</label>
+            <input class="ev-input" type="datetime-local" id="evDate" />
+          </div>
+          <div class="ev-field">
+            <label class="ev-label" for="evClosesAt">Registration Closes</label>
+            <input class="ev-input" type="datetime-local" id="evClosesAt" />
+          </div>
+        </div>
+
+        <!-- Section: Ticket Types -->
+        <div class="ev-section-label" style="margin-top:8px;">
+          <i class="fa-solid fa-ticket"></i> Ticket Types
+        </div>
+        <p class="ev-section-hint">Select which tickets attendees will receive for this event.</p>
+
+        <div class="ev-ticket-grid">
+          <label class="ev-ticket-card" id="entryTicketCard">
+            <input type="checkbox" id="evHasEntry" />
+            <div class="ev-ticket-icon-wrap">
+              <i class="fa-solid fa-ticket"></i>
+            </div>
+            <div class="ev-ticket-info">
+              <div class="ev-ticket-name">Entry Ticket</div>
+              <div class="ev-ticket-desc">Standard event entry pass</div>
+            </div>
+            <div class="ev-ticket-checkmark"><i class="fa-solid fa-check"></i></div>
+          </label>
+
+          <label class="ev-ticket-card" id="foodTicketCard">
+            <input type="checkbox" id="evHasFood" />
+            <div class="ev-ticket-icon-wrap">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+            <div class="ev-ticket-info">
+              <div class="ev-ticket-name">Food Ticket</div>
+              <div class="ev-ticket-desc">Food &amp; beverage access</div>
+            </div>
+            <div class="ev-ticket-checkmark"><i class="fa-solid fa-check"></i></div>
+          </label>
+        </div>
+
+        <!-- Error + Buttons -->
+        <div id="eventFormError" class="ev-form-error" style="display:none;"></div>
+
+        <div class="ev-btn-row">
+          <button type="submit" class="btn btn-gold ev-submit-btn" id="eventFormSubmit">
+            <i class="fa-solid fa-calendar-plus"></i> Create Event
+          </button>
+          <button type="button" class="btn btn-outline" onclick="closeEventModal()">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
 
-  <!-- Add Member Modal -->
+  <!-- Add / Edit User Modals (from previous build) -->
   <div class="modal-overlay" id="addModal" style="display:none;">
     <div class="modal-card">
       <div class="modal-header">
-        <h2>Add New Member</h2>
-        <button onclick="closeModal()" class="modal-close" id="modalCloseBtn">&times;</button>
+        <h2>Add New User</h2>
+        <button onclick="closeModal()" class="modal-close">&times;</button>
       </div>
-      <form onsubmit="addMember(event)" id="addMemberForm">
-        <div class="form-group">
-          <label class="form-label">Full Name</label>
-          <input class="form-input" type="text" id="newName" required placeholder="e.g. María García" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input class="form-input" type="email" id="newEmail" required placeholder="e.g. garcia@purdue.edu" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Role</label>
+      <div id="addSuccessMsg" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;
+           border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.88rem;color:#166534;">
+        <strong>User created!</strong> Temporary password:
+        <code id="addTmpPass" style="background:#dcfce7;padding:2px 6px;border-radius:4px;font-size:0.9rem;"></code>
+      </div>
+      <form onsubmit="submitAddMember(event)" id="addMemberForm">
+        <div class="form-group"><label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="newName" required placeholder="e.g. María García" /></div>
+        <div class="form-group"><label class="form-label">Email</label>
+          <input class="form-input" type="email" id="newEmail" required placeholder="e.g. garcia@purdue.edu" /></div>
+        <div class="form-group" id="newRoleGroup" style="display:none;"><label class="form-label">Role</label>
           <select class="form-input" id="newRole">
-            <option value="member">Member</option>
-            <option value="board">Board</option>
-            <option value="alumni">Alumni</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Status</label>
+            <option value="user">User</option>
+            <option value="superuser">Superuser</option>
+            <option value="admin">Admin</option>
+          </select></div>
+        <div class="form-group"><label class="form-label">Status</label>
           <select class="form-input" id="newStatus">
             <option value="active">Active</option>
             <option value="pending">Pending</option>
-          </select>
-        </div>
-        <div style="display:flex; gap:12px; margin-top:8px;">
-          <button type="submit" class="btn btn-gold" style="flex:1;" id="addMemberSubmit">Add Member</button>
+          </select></div>
+        <div id="addErrorMsg" style="display:none;color:#dc2626;font-size:0.85rem;margin-bottom:10px;"></div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button type="submit" class="btn btn-gold" style="flex:1;" id="addMemberSubmit">Add User</button>
           <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal()">Cancel</button>
         </div>
       </form>
     </div>
   </div>
 
+  <div class="modal-overlay" id="editModal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Edit User</h2>
+        <button onclick="closeEditModal()" class="modal-close">&times;</button>
+      </div>
+      <form onsubmit="submitEditMember(event)" id="editMemberForm">
+        <input type="hidden" id="editId" />
+        <div class="form-group"><label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="editName" required /></div>
+        <div class="form-group"><label class="form-label">Email</label>
+          <input class="form-input" type="email" id="editEmail" required /></div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-input" id="editStatus">
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="suspended">Suspended</option>
+          </select></div>
+        <div class="form-group" id="editRoleGroup" style="display:none;"><label class="form-label">Role</label>
+          <select class="form-input" id="editRole">
+            <option value="user">User</option>
+            <option value="superuser">Superuser</option>
+            <option value="admin">Admin</option>
+          </select></div>
+        <div id="editErrorMsg" style="display:none;color:#dc2626;font-size:0.85rem;margin-bottom:10px;"></div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button type="submit" class="btn btn-gold" style="flex:1;" id="editMemberSubmit">Save Changes</button>
+          <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeEditModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
   <script src="js/members.js"></script>
 </body>
 </html>
