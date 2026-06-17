@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal — CSAP | Colombian Student Association at Purdue</title>
   <meta name="description" content="CSAP admin portal — manage events, tickets, and check-ins." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
@@ -24,8 +27,8 @@
       </div>
       <div class="admin-header-right">
         <span class="admin-user"><i class="fa-solid fa-user"></i> <span id="headerUserName">…</span></span>
-        <a href="index.html" class="btn btn-outline" style="padding:7px 16px;font-size:0.82rem;">← Website</a>
-        <a href="php/logout.php" class="btn btn-dark" style="padding:7px 16px;font-size:0.82rem;">Logout</a>
+        <a href="./" class="btn btn-outline" style="padding:7px 16px;font-size:0.82rem;">← Website</a>
+        <button type="button" onclick="logoutCurrentUser()" class="btn btn-dark" style="padding:7px 16px;font-size:0.82rem;">Logout</button>
       </div>
     </div>
     <div class="flag-stripe" style="height:4px;">
@@ -297,14 +300,15 @@
       </div>
       <div id="addSuccessMsg" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;
            border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.88rem;color:#166534;">
-        <strong>User created!</strong> Temporary password:
-        <code id="addTmpPass" style="background:#dcfce7;padding:2px 6px;border-radius:4px;font-size:0.9rem;"></code>
+        <strong>User created!</strong> They can sign in with their email and last name(s).
       </div>
       <form onsubmit="submitAddMember(event)" id="addMemberForm">
         <div class="form-group"><label class="form-label">Full Name</label>
           <input class="form-input" type="text" id="newName" required placeholder="e.g. María García" /></div>
         <div class="form-group"><label class="form-label">Email</label>
           <input class="form-input" type="email" id="newEmail" required placeholder="e.g. garcia@purdue.edu" /></div>
+        <div class="form-group"><label class="form-label">Login Last Name(s)</label>
+          <input class="form-input" type="text" id="newLastNames" required placeholder="e.g. García" autocomplete="family-name" /></div>
         <div class="form-group" id="newRoleGroup" style="display:none;"><label class="form-label">Role</label>
           <select class="form-input" id="newRole">
             <option value="user">User</option>
@@ -329,7 +333,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <h2>Edit User</h2>
-        <button onclick="closeEditModal()" class="modal-close">&times;</button>
+        <button onclick="closeUserEditModal()" class="modal-close">&times;</button>
       </div>
       <form onsubmit="submitEditMember(event)" id="editMemberForm">
         <input type="hidden" id="editId" />
@@ -337,6 +341,9 @@
           <input class="form-input" type="text" id="editName" required /></div>
         <div class="form-group"><label class="form-label">Email</label>
           <input class="form-input" type="email" id="editEmail" required /></div>
+        <div class="form-group"><label class="form-label">Login Last Name(s)</label>
+          <input class="form-input" type="text" id="editLastNames" placeholder="Leave blank to keep current" autocomplete="family-name" />
+          <p style="font-size:0.74rem;color:var(--gray-500);margin-top:4px;">Required if changing the user's email. If provided, it updates their login credential.</p></div>
         <div class="form-group"><label class="form-label">Status</label>
           <select class="form-input" id="editStatus">
             <option value="active">Active</option>
@@ -352,12 +359,15 @@
         <div id="editErrorMsg" style="display:none;color:#dc2626;font-size:0.85rem;margin-bottom:10px;"></div>
         <div style="display:flex;gap:12px;margin-top:8px;">
           <button type="submit" class="btn btn-gold" style="flex:1;" id="editMemberSubmit">Save Changes</button>
-          <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeEditModal()">Cancel</button>
+          <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeUserEditModal()">Cancel</button>
         </div>
       </form>
     </div>
   </div>
 
+  <script src="js/auth-core.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-service.js"></script>
   <script src="js/dashboard.js"></script>
   <script src="js/members.js"></script>
 </body>

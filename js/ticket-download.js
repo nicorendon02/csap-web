@@ -1,16 +1,22 @@
 // =====================================================
-// CSAP — ticket-download.js
-// Ticket download page logic: populate event dropdown,
-// find ticket by PUID + event, generate PDF.
+// CSAP - ticket-download.js
+// Ticket lookup from Supabase by event + email.
 // =====================================================
 
 document.addEventListener('DOMContentLoaded', loadEventDropdown);
 
 async function loadEventDropdown() {
   const sel = document.getElementById('dlEvent');
+  const btn = document.getElementById('dlBtn');
+
+  if (!window.CSAP_DB?.isConfigured?.()) {
+    sel.innerHTML = '<option value="">Ticket lookup unavailable</option>';
+    if (btn) btn.disabled = true;
+    return;
+  }
+
   try {
-    const res    = await fetch('php/events/get-events.php');
-    const events = await res.json();
+    const events = await window.CSAP_DB.getEvents();
 
     if (!Array.isArray(events) || events.length === 0) {
       sel.innerHTML = '<option value="">No events available</option>';
@@ -18,83 +24,78 @@ async function loadEventDropdown() {
     }
 
     sel.innerHTML =
-      '<option value="">— Select an event —</option>' +
+      '<option value="">Select an event</option>' +
       events.map(e =>
-        `<option value="${e.id}">${escHtml(e.title)} — ${e.event_date_formatted ?? 'Date TBD'}</option>`
+        `<option value="${escHtml(e.id)}">${escHtml(e.title)} - ${e.event_date_formatted ?? 'Date TBD'}</option>`
       ).join('');
-  } catch {
-    sel.innerHTML = '<option value="">Failed to load events</option>';
+  } catch (err) {
+    sel.innerHTML = `<option value="">${escHtml(err.message || 'Failed to load events')}</option>`;
   }
 }
 
-function onPuidInput(input) {
-  const hint = document.getElementById('dlPuidHint');
-  const val  = input.value.replace(/\D/g, '');
-  input.value = val;
+function onEmailInput(input) {
+  const hint = document.getElementById('dlEmailHint');
+  const val = input.value.trim();
   hint.textContent = '';
-  hint.className   = 'puid-hint';
-  if (val.length > 0 && val.length < 10) {
-    hint.textContent = `${10 - val.length} more digit${10 - val.length > 1 ? 's' : ''} needed.`;
-    hint.className   = 'puid-hint warn';
-  } else if (val.length === 10) {
-    hint.textContent = '✓ Looks good!';
-    hint.className   = 'puid-hint ok';
+  hint.className = 'email-hint';
+  if (val.length > 0 && !isValidEmail(val)) {
+    hint.textContent = 'Enter a valid email address.';
+    hint.className = 'email-hint warn';
+  } else if (isValidEmail(val)) {
+    hint.textContent = 'Looks good!';
+    hint.className = 'email-hint ok';
   }
 }
 
 async function downloadTicket() {
   const eventId = document.getElementById('dlEvent').value;
-  const puid    = document.getElementById('dlPuid').value.trim();
-  const btn     = document.getElementById('dlBtn');
+  const email = document.getElementById('dlEmail').value.trim();
+  const btn = document.getElementById('dlBtn');
 
   if (!eventId) {
-    Swal.fire({ icon:'warning', title:'Select an event', text:'Please choose your event from the dropdown.', confirmButtonColor:'#c2971a' });
+    Swal.fire({ icon: 'warning', title: 'Select an event', text: 'Please choose your event from the dropdown.', confirmButtonColor: '#c2971a' });
     return;
   }
-  if (!/^\d{10}$/.test(puid)) {
-    Swal.fire({ icon:'warning', title:'Invalid PUID', text:'Your Purdue ID must be exactly 10 digits.', confirmButtonColor:'#c2971a' });
+  if (!isValidEmail(email)) {
+    Swal.fire({ icon: 'warning', title: 'Invalid email', text: 'Enter the email address you used during registration.', confirmButtonColor: '#c2971a' });
     return;
   }
 
-  btn.disabled  = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Looking up ticket…';
-
-  const body = new FormData();
-  body.append('event_id', eventId);
-  body.append('puid', puid);
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Looking up ticket...';
 
   try {
-    const res  = await fetch('php/events/get-ticket.php', { method: 'POST', body });
-    const data = await res.json();
-
-    if (!res.ok || data.error) throw new Error(data.error || 'Ticket not found.');
-
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating PDF…';
+    const data = await window.CSAP_DB.getTicket(eventId, email);
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating PDF...';
     await generateTicketPDF(data.registration, data.event);
 
     Swal.fire({
-      icon:  'success',
+      icon: 'success',
       title: 'Ticket downloaded!',
-      text:  'Your ticket PDF has been saved. Keep it handy for the event!',
+      text: 'Your ticket PDF has been saved. Keep it handy for the event!',
       confirmButtonColor: '#c2971a',
     });
   } catch (err) {
     Swal.fire({
-      icon:  'error',
+      icon: 'error',
       title: 'Ticket not found',
-      html:  `<p style="font-size:0.95rem;color:#555;">${escHtml(err.message)}</p>
-              <p style="font-size:0.82rem;color:#888;margin-top:8px;">
-                Make sure your PUID matches exactly what you used during registration, and that you selected the correct event.
+      html: `<p style="font-size:0.95rem;color:#555;">${escHtml(err.message)}</p>
+             <p style="font-size:0.82rem;color:#888;margin-top:8px;">
+                Make sure your email matches exactly what you used during registration, and that you selected the correct event.
               </p>`,
-      confirmButtonText:  'Try again',
+      confirmButtonText: 'Try again',
       confirmButtonColor: '#c2971a',
     });
   } finally {
-    btn.disabled  = false;
+    btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-download"></i> Download Ticket';
   }
 }
 
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim().toLowerCase());
+}
+
 function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

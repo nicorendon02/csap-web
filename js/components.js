@@ -7,7 +7,7 @@
   const NAV_HTML = `
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" id="navLogo" aria-label="CSAP Home">
+    <a href="./" class="nav-logo" id="navLogo" aria-label="CSAP Home">
       <img src="img/csap-logo.svg" class="logo-tunjo" width="48" height="48" alt="CSAP logo" aria-hidden="true" />
       <div class="nav-logo-text">
         <span class="nav-logo-name">CSAP</span>
@@ -29,7 +29,6 @@
       <li><a href="new-student-info.html" id="navNewStudentLink">New student info</a></li>
       <li><a href="grants.html" id="navGrantsLink">Grants</a></li>
       <li><a href="colombia.html" id="navColombiaLink">Colombia</a></li>
-      <li><a href="login.html" id="navLoginBtn">Login</a></li>
     </ul>
   </div>
   <div class="flag-stripe" aria-hidden="true">
@@ -59,7 +58,7 @@
       <div class="footer-col">
         <h4>Navigate</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="./">Home</a></li>
           <li><a href="about.html">About Us</a></li>
           <li><a href="events.html">Events</a></li>
           <li><a href="join.html">Join &amp; Collaborate</a></li>
@@ -81,7 +80,6 @@
           <li><a href="mailto:csap@purdue.edu">csap@purdue.edu</a></li>
           <li><a href="https://boilerlink.purdue.edu/organization/csap" target="_blank" rel="noopener">BoilerLink Page</a></li>
           <li><a href="join.html">Become a Member</a></li>
-          <li><a href="login.html">Member Login</a></li>
         </ul>
       </div>
     </div>
@@ -104,7 +102,7 @@
   const DOCK_HTML = `
 <div class="mobile-dock" id="mobileDock" role="navigation" aria-label="Mobile navigation">
   <div class="mobile-dock-inner">
-    <a href="index.html" class="dock-tab" id="dockHome">
+    <a href="./" class="dock-tab" id="dockHome">
       <i class="fa-solid fa-house"></i>
       <span>Home</span>
     </a>
@@ -136,10 +134,6 @@
   <a href="colombia.html" class="dock-more-link" id="dockColombia">
     <i class="fa-solid fa-flag"></i> Colombia
   </a>
-  <div class="dock-more-divider"></div>
-  <a href="login.html" class="dock-more-link" id="dockLogin">
-    <i class="fa-solid fa-right-to-bracket"></i> Member Login
-  </a>
 </div>`;
   document.body.insertAdjacentHTML('beforeend', DOCK_HTML);
 
@@ -151,7 +145,8 @@
   // Match current pathname segment against each nav link
   const currentPath = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
   document.querySelectorAll('.nav-links a').forEach(link => {
-    const linkPath = link.getAttribute('href').replace(/\.html$/, '').replace(/\/$/, '') || '/';
+    const href = link.getAttribute('href');
+    const linkPath = href === './' ? '/' : href.replace(/\.html$/, '').replace(/\/$/, '') || '/';
     const aboutGroup = ['/about', '/board', '/previous-officers'];
     if (linkPath === currentPath) {
       link.classList.add('active');
@@ -163,7 +158,8 @@
   // ── Auto-highlight active dock tab ──────────────────────
   const currentFile = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.dock-tab[href]').forEach(tab => {
-    if (tab.getAttribute('href') === currentFile) tab.classList.add('active');
+    const href = tab.getAttribute('href');
+    if (href === currentFile || (href === './' && currentFile === 'index.html')) tab.classList.add('active');
   });
 
   // ── Smooth page transitions ──────────────────────────────

@@ -7,11 +7,14 @@
 
 /**
  * Generate and download a CSAP event ticket as a PDF.
- * @param {Object} registration  { id, puid, first_name, last_name, guests, entry_ticket, food_ticket }
+ * @param {Object} registration  { id, email, first_name, last_name, guests, entry_ticket, food_ticket }
  * @param {Object} event         { title, location, event_date_formatted, event_time_formatted }
  * @returns {Promise<void>}
  */
 async function generateTicketPDF(registration, event) {
+  const ticketId = String(registration?.id || '').trim();
+  if (!ticketId) throw new Error('Registration is missing a ticket id.');
+  const ticketLabel = formatTicketId(ticketId);
 
   // ── Step 1: Load CSAP logo as base64 ─────────────
   let logoDataUrl = null;
@@ -36,7 +39,7 @@ async function generateTicketPDF(registration, event) {
     document.body.appendChild(qrWrap);
 
     new QRCode(qrWrap, {
-      text:         registration.puid,
+      text:         ticketId,
       width:        160,
       height:       160,
       colorDark:    '#003087',
@@ -172,7 +175,7 @@ async function generateTicketPDF(registration, event) {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(90, 90, 90);
-        doc.text(`PUID: ${registration.puid}`, W / 2, y, { align: 'center' });
+        doc.text(`Ticket ID: ${ticketLabel}`, W / 2, y, { align: 'center' });
         y += 4;
         doc.text(`Additional Guests: +${registration.guests}`, W / 2, y, { align: 'center' });
         y += 3;
@@ -208,7 +211,7 @@ async function generateTicketPDF(registration, event) {
         // Dynamically size QR to fit remaining page space
         if (qrDataUrl) {
           const footerZone   = 12;    // space reserved for footer + bottom border
-          const qrLabelSpace = 9;     // "SCAN TO VERIFY" + PUID line heights
+          const qrLabelSpace = 9;     // "SCAN TO VERIFY" + ticket id line heights
           const available    = (H - footerZone - qrLabelSpace) - y;
           const QR_SIZE      = Math.min(36, Math.max(24, available));
 
@@ -224,7 +227,7 @@ async function generateTicketPDF(registration, event) {
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(5.5);
           doc.setTextColor(180, 165, 145);
-          doc.text(registration.puid, W / 2, y, { align: 'center' });
+          doc.text(ticketLabel, W / 2, y, { align: 'center' });
         }
 
         // ── 12. Footer ────────────────────────────────
@@ -232,7 +235,7 @@ async function generateTicketPDF(registration, event) {
         doc.setFontSize(5.5);
         doc.setTextColor(205, 195, 180);
         doc.text(
-          `CSAP  \u00b7  Colombian Student Association at Purdue  \u00b7  #${String(registration.id).padStart(5, '0')}`,
+          `CSAP  \u00b7  Colombian Student Association at Purdue  \u00b7  Ticket ${ticketLabel}`,
           W / 2, H - 5, { align: 'center' }
         );
 
@@ -242,8 +245,9 @@ async function generateTicketPDF(registration, event) {
         doc.rect(2.5, 2.5, W - 5, H - 5, 'S');
 
         // ── Save ──────────────────────────────────────
+        const safeTicketId = ticketId.replace(/[^a-z0-9_-]/gi, '').slice(0, 32) || 'ticket';
         const filename =
-          `csap-ticket-${event.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${registration.puid}.pdf`;
+          `csap-ticket-${event.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${safeTicketId}.pdf`;
         doc.save(filename);
         resolve();
 
@@ -252,4 +256,9 @@ async function generateTicketPDF(registration, event) {
       }
     }, 300);
   });
+}
+
+function formatTicketId(ticketId) {
+  const id = String(ticketId || '');
+  return id.length > 22 ? `${id.slice(0, 10)}...${id.slice(-8)}` : id;
 }

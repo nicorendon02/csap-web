@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scan Tickets — CSAP Portal</title>
   <meta name="description" content="CSAP admin QR ticket scanner for event check-in." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/admin.css" />
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
   <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- html5-qrcode -->
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script defer src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
     .scanner-page {
       min-height: 100vh;
@@ -148,7 +151,7 @@
       <a href="members.html" class="btn btn-outline" style="padding:7px 14px;font-size:0.8rem;">
         <i class="fa-solid fa-arrow-left"></i> Dashboard
       </a>
-      <a href="php/logout.php" style="font-size:0.8rem;color:var(--gray-300);text-decoration:none;">Logout</a>
+      <button type="button" onclick="logoutCurrentUser()" style="font-size:0.8rem;color:var(--gray-300);background:none;text-decoration:none;">Logout</button>
     </div>
   </header>
 
@@ -192,12 +195,15 @@
     </div>
     <div class="checkin-title">Check-in Successful!</div>
     <div class="checkin-name" id="overlayName"></div>
-    <div class="checkin-detail" id="overlayPuid"></div>
+    <div class="checkin-detail" id="overlayTicket"></div>
     <div class="checkin-detail" id="overlayGuests"></div>
     <div class="checkin-chips" id="overlayChips"></div>
     <div class="checkin-dismiss">Tap anywhere to continue scanning</div>
   </div>
 
+  <script src="js/auth-core.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-service.js"></script>
   <script src="js/scanner.js"></script>
 </body>
 </html>

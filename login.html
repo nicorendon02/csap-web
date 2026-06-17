@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Member Login — CSAP | Colombian Student Association at Purdue</title>
-  <meta name="description" content="Login to the CSAP members portal." />
+  <title>Portal Disabled — CSAP | Colombian Student Association at Purdue</title>
+  <meta name="description" content="The CSAP members portal is temporarily disabled." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     body {
@@ -213,68 +217,25 @@
         <span>CSAP</span>
       </div>
 
-      <h1 class="login-title">Welcome Back</h1>
-      <p class="login-sub">Sign in to the CSAP Members Portal</p>
+      <h1 class="login-title">Portal Temporarily Disabled</h1>
+      <p class="login-sub">The CSAP members portal is not enabled for this static launch.</p>
 
-      <div class="login-error" id="loginError" role="alert">
-        Incorrect username or password. Please try again.
-      </div>
+      <p style="font-size:0.9rem;color:var(--gray-500);line-height:1.7;text-align:center;margin-bottom:24px;">
+        Public pages are available while we finish the backend and access controls.
+      </p>
 
-      <!-- Form posts to PHP — stub ready for Hostinger -->
-      <form id="loginForm" action="php/login.php" method="POST">
-        <div class="form-group">
-          <label class="form-label" for="loginUsername">Username or Email</label>
-          <input class="form-input" type="text" id="loginUsername" name="username"
-                 placeholder="your@purdue.edu" autocomplete="username" required />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="loginPassword">Password</label>
-          <input class="form-input" type="password" id="loginPassword" name="password"
-                 placeholder="••••••••" autocomplete="current-password" required />
-        </div>
-        <div class="form-extras">
-          <a href="mailto:csap@purdue.edu?subject=Password Reset Request" class="forgot-link" id="forgotPwLink">
-            Forgot password?
-          </a>
-        </div>
-        <button type="submit" class="btn-login" id="loginSubmitBtn">Sign In</button>
-      </form>
+      <a href="./" class="btn-login" style="display:block;text-align:center;">Back to Website</a>
 
       <div class="login-divider">or</div>
       <p class="login-register">
         Not a member? <a href="join.html" id="loginJoinLink">Join CSAP →</a>
       </p>
       <p class="login-register" style="margin-top:10px;">
-        <a href="index.html" id="loginBackLink">← Back to website</a>
+        <a href="./" id="loginBackLink">← Back to website</a>
       </p>
 
     </div>
   </div>
 
-  <script>
-    // Read ?error= from URL and show the appropriate message
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const code   = params.get('error');
-      if (!code) return;
-
-      const messages = {
-        invalid : 'Incorrect email or password. Please try again.',
-        empty   : 'Please enter your email and password.',
-        inactive: 'Your account is not active. Contact an administrator.',
-        session : 'Your session has expired. Please sign in again.',
-        server  : 'A server error occurred. Please try again later.',
-      };
-
-      const errEl = document.getElementById('loginError');
-      if (errEl) {
-        errEl.textContent = messages[code] || 'Login failed. Please try again.';
-        errEl.style.display = 'block';
-      }
-
-      // Clean the URL so a page refresh doesn't re-show the error
-      history.replaceState(null, '', window.location.pathname);
-    })();
-  </script>
 </body>
 </html>

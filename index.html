@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CSAP — Colombian Student Association at Purdue</title>
   <meta name="description" content="The Colombian Student Association at Purdue (CSAP) builds community, celebrates Colombian culture, and supports students at Purdue University." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preconnect" href="https://w.behold.so" />
+  <link rel="preconnect" href="https://feeds.behold.so" />
   <link rel="stylesheet" href="css/styles.css" />
   <style>
     /* ── Hero Video ────────────────────────────────────── */
@@ -601,7 +606,7 @@
         muted
         loop
         playsinline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true">
       </video>
 
@@ -665,7 +670,7 @@
             </div>
           </div>
           <div class="about-img-wrap" data-animate="right">
-            <img src="img/gallery/picnic.jpeg" alt="CSAP picnic" />
+            <img src="img/gallery/picnic.jpeg" alt="CSAP picnic" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
@@ -703,9 +708,18 @@
         <div style="margin-top: 32px;">
           <behold-widget feed-id="9riEfVcDwPTpNpN3njeb"></behold-widget>
           <script>
-            (() => {
-              const d=document,s=d.createElement("script");s.type="module";
-              s.src="https://w.behold.so/widget.js";d.head.append(s);
+            (function () {
+              function loadBehold() {
+                const s = document.createElement('script');
+                s.type = 'module';
+                s.src = 'https://w.behold.so/widget.js';
+                document.head.append(s);
+              }
+              if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadBehold, { timeout: 2500 });
+              } else {
+                window.addEventListener('load', () => setTimeout(loadBehold, 500), { once: true });
+              }
             })();
           </script>
         </div>
@@ -794,6 +808,9 @@
 
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/auth-core.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-service.js"></script>
   <script src="js/index-events.js"></script>
 
 
@@ -832,7 +849,7 @@
           + ' onclick="window.open(\'' + ytUrl + '\',\'_blank\',\'noopener\')"'
           + ' aria-label="Watch on YouTube">'
           + '<div class="podcast-thumb">'
-          + '<img src="' + thumb + '" alt="' + v.title.replace(/"/g, '&quot;') + '" loading="lazy" />'
+          + '<img src="' + thumb + '" alt="' + v.title.replace(/"/g, '&quot;') + '" loading="lazy" decoding="async" />'
           + '<div class="podcast-play-btn"><span>&#9654;</span></div>'
           + '<span class="podcast-ep-num">Ep. ' + epNum + '</span>'
           + '</div><div class="podcast-card-body">'

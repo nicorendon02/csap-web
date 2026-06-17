@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Events — CSAP | Colombian Student Association at Purdue</title>
   <meta name="description" content="Upcoming CSAP events — register for cultural celebrations, food nights, and community gatherings." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
   <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- jsPDF + QRCode for ticket generation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     /* ── Event cards ─────────────────────────────────── */
     .fade-in { opacity:0; transform:translateY(24px); transition:opacity .6s ease,transform .6s ease; }
@@ -115,6 +118,7 @@
     .reg-input.error { border-color:#dc2626; }
     .reg-field-hint { font-size:0.75rem; color:var(--gray-300); margin-top:4px; }
     .reg-field-hint.warn { color:#dc2626; }
+    .reg-field-hint.ok { color:#16a34a; }
     .guest-stepper {
       display:flex; align-items:center; gap:12px;
     }
@@ -215,11 +219,11 @@
         <input type="hidden" id="regEventId" />
 
         <div class="reg-field">
-          <label class="reg-label" for="regPuid">Purdue ID (PUID) *</label>
-          <input class="reg-input" type="text" id="regPuid" inputmode="numeric"
-                 maxlength="10" placeholder="0000000000"
-                 oninput="validatePuid(this)" required />
-          <p class="reg-field-hint" id="regPuidHint"></p>
+          <label class="reg-label" for="regEmail">Email *</label>
+          <input class="reg-input" type="email" id="regEmail"
+                 placeholder="your@purdue.edu"
+                 oninput="validateRegEmail(this)" required />
+          <p class="reg-field-hint" id="regEmailHint"></p>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
@@ -247,7 +251,7 @@
           <div class="policy-check">
             <input type="checkbox" id="regPolicy" required />
             <label for="regPolicy">
-              I agree to CSAP's data handling policy. My information (name and PUID) will be used
+              I agree to CSAP's data handling policy. My information (name and email) will be used
               solely for event management and attendance tracking purposes.
             </label>
           </div>
@@ -265,6 +269,9 @@
 
   <script src="js/components.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/auth-core.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-service.js"></script>
   <script src="js/pdf-ticket.js"></script>
   <script src="js/events-portal.js"></script>
 </body>

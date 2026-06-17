@@ -4,14 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Download My Ticket — CSAP | Colombian Student Association at Purdue</title>
-  <meta name="description" content="Download your CSAP event ticket PDF. Enter your PUID and select your event." />
+  <meta name="description" content="Download your CSAP event ticket PDF. Enter your email and select your event." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" type="image/x-icon" href="img/csap-logo-rounded.ico" />
   <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- jsPDF + QRCode for ticket generation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     body {
       min-height: 100vh;
@@ -92,9 +95,9 @@
     .back-link a { font-size:0.85rem; color:var(--gold-dark,#9a7600); font-weight:600; text-decoration:none; }
     .back-link a:hover { text-decoration:underline; }
 
-    .puid-hint { font-size:0.74rem; margin-top:4px; transition:color .2s; }
-    .puid-hint.warn  { color:#dc2626; }
-    .puid-hint.ok    { color:#16a34a; }
+    .email-hint { font-size:0.74rem; margin-top:4px; transition:color .2s; }
+    .email-hint.warn  { color:#dc2626; }
+    .email-hint.ok    { color:#16a34a; }
   </style>
 </head>
 <body>
@@ -112,7 +115,7 @@
       </div>
 
       <h1 class="tc-title">Download My Ticket</h1>
-      <p class="tc-sub">Enter your PUID and select the event to retrieve your ticket PDF.</p>
+      <p class="tc-sub">Enter your email and select the event to retrieve your ticket PDF.</p>
 
       <div class="form-group">
         <label class="form-label" for="dlEvent">Event</label>
@@ -122,11 +125,11 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="dlPuid">Your Purdue ID (PUID)</label>
-        <input class="form-input" type="text" id="dlPuid" inputmode="numeric"
-               maxlength="10" placeholder="0000000000"
-               oninput="onPuidInput(this)" />
-        <p class="puid-hint" id="dlPuidHint"></p>
+        <label class="form-label" for="dlEmail">Your Email</label>
+        <input class="form-input" type="email" id="dlEmail"
+               placeholder="your@purdue.edu"
+               oninput="onEmailInput(this)" />
+        <p class="email-hint" id="dlEmailHint"></p>
       </div>
 
       <button class="btn-download" id="dlBtn" onclick="downloadTicket()">
@@ -140,7 +143,9 @@
     </div>
   </div>
 
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" onerror="this.remove()"></script>
+  <script src="js/auth-core.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/supabase-service.js"></script>
   <script src="js/pdf-ticket.js"></script>
   <script src="js/ticket-download.js"></script>
 </body>

@@ -1,11 +1,10 @@
 // =====================================================
-// CSAP — index-events.js
-// Loads the latest 3 active events from the DB and
-// renders them into the homepage events grid.
+// CSAP - index-events.js
+// Loads the latest 3 active events from Supabase.
 // =====================================================
 (async function loadIndexEvents() {
   const empty = document.getElementById('indexEventsEmpty');
-  const grid  = document.getElementById('indexEventsGrid');
+  const grid = document.getElementById('indexEventsGrid');
   if (!empty || !grid) return;
 
   function esc(s) {
@@ -17,18 +16,18 @@
   }
 
   const CAT_STYLE = {
-    social:       { bg: '#e8f0ff', tc: '#003087' },
-    cultural:     { bg: '#fdf6e4', tc: '#7a5500' },
-    academic:     { bg: '#e6f9f0', tc: '#15803d' },
-    food:         { bg: '#fff0f4', tc: '#99001a' },
+    social: { bg: '#e8f0ff', tc: '#003087' },
+    cultural: { bg: '#fdf6e4', tc: '#7a5500' },
+    academic: { bg: '#e6f9f0', tc: '#15803d' },
+    food: { bg: '#fff0f4', tc: '#99001a' },
     professional: { bg: '#f0f0ff', tc: '#3730a3' },
-    fundraiser:   { bg: '#fff4e6', tc: '#9a3412' },
+    fundraiser: { bg: '#fff4e6', tc: '#9a3412' },
   };
 
   function buildCard(ev) {
     const open = +ev.registration_open === 1;
-    const cat  = (ev.category || 'social').toLowerCase();
-    const s    = CAT_STYLE[cat] || { bg: '#f5f5f5', tc: '#444' };
+    const cat = (ev.category || 'social').toLowerCase();
+    const s = CAT_STYLE[cat] || { bg: '#f5f5f5', tc: '#444' };
 
     const regChip = open
       ? `<span style="font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;
@@ -82,20 +81,13 @@
   }
 
   try {
-    const res = await fetch('php/events/get-events.php');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const events = await res.json();
-
-    if (!Array.isArray(events) || events.length === 0) return; // keep gray message
+    const events = await window.CSAP_DB.getEvents();
+    if (!Array.isArray(events) || events.length === 0) return;
 
     grid.innerHTML = events.slice(0, 3).map(buildCard).join('');
-
-    // Swap: hide gray message, show grid
     empty.style.display = 'none';
-    grid.style.cssText  = 'display:grid !important;';
-
+    grid.style.cssText = 'display:grid !important;';
   } catch (err) {
     console.warn('[CSAP] Events failed to load:', err);
-    // empty state remains visible by default — no action needed
   }
 })();
