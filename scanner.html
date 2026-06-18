@@ -125,6 +125,126 @@
       border: 1px solid rgba(255,255,255,.35);
       display: flex; align-items: center; gap: 6px;
     }
+
+    /* ── Manual Check-in Panel ───────────────────── */
+    .manual-panel {
+      width: 100%; max-width: 520px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .manual-panel-toggle {
+      width: 100%; background: none; border: none;
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 22px; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      color: var(--gray-700);
+      transition: background .15s;
+      border-radius: 16px;
+    }
+    .manual-panel-toggle:hover { background: var(--gray-50, #f9fafb); }
+    .manual-panel-toggle .mp-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: rgba(194,154,18,.12);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 0.9rem; flex-shrink: 0;
+    }
+    .manual-panel-toggle .mp-chevron {
+      margin-left: auto; color: var(--gray-300);
+      transition: transform .2s;
+    }
+    .manual-panel-toggle.open .mp-chevron { transform: rotate(180deg); }
+    .manual-panel-body {
+      display: none;
+      padding: 0 22px 20px;
+      border-top: 1px solid var(--border);
+    }
+    .manual-panel-body.open { display: block; }
+
+    .manual-search-wrap {
+      position: relative; margin-top: 16px;
+    }
+    .manual-search-wrap i {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-300); pointer-events: none;
+    }
+    .manual-search-input {
+      width: 100%; padding: 11px 14px 11px 38px;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      font-family: 'Inter', sans-serif; font-size: 0.92rem;
+      color: var(--dark); background: var(--cream);
+      outline: none; transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    .manual-search-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(194,154,18,.12);
+      background: #fff;
+    }
+    .manual-search-hint {
+      font-size: 0.75rem; color: var(--gray-400);
+      margin: 6px 0 0 2px;
+    }
+
+    .manual-results {
+      margin-top: 14px;
+      display: flex; flex-direction: column; gap: 8px;
+      max-height: 340px; overflow-y: auto;
+    }
+    .manual-result-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--border); border-radius: 12px;
+      background: var(--cream); transition: border-color .15s;
+    }
+    .manual-result-row:hover { border-color: var(--gold); }
+    .manual-result-row.already-in {
+      background: #f0fdf4; border-color: #bbf7d0;
+      opacity: .75;
+    }
+    .mr-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.88rem; flex-shrink: 0;
+      color: #fff; background: var(--gold);
+    }
+    .mr-avatar.checked { background: #16a34a; }
+    .mr-info { flex: 1; min-width: 0; }
+    .mr-name {
+      font-weight: 700; font-size: 0.9rem;
+      color: var(--dark); white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .mr-meta {
+      font-size: 0.75rem; color: var(--gray-400);
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px;
+    }
+    .mr-badge {
+      font-size: 0.68rem; font-weight: 700; padding: 2px 7px;
+      border-radius: 999px;
+    }
+    .mr-badge-entry { background: #e0e7ff; color: #3730a3; }
+    .mr-badge-food  { background: #ffe4e6; color: #9f1239; }
+    .mr-badge-checked { background: #dcfce7; color: #15803d; }
+    .btn-manual-checkin {
+      padding: 7px 14px; border-radius: 8px;
+      background: var(--gold); color: #fff;
+      border: none; cursor: pointer; font-size: 0.8rem;
+      font-family: 'Inter', sans-serif; font-weight: 700;
+      white-space: nowrap; transition: all .15s; flex-shrink: 0;
+    }
+    .btn-manual-checkin:hover { background: var(--gold-dark); transform: translateY(-1px); }
+    .btn-manual-checkin:disabled {
+      background: #d1d5db; cursor: default; transform: none;
+    }
+    .manual-empty {
+      text-align: center; padding: 24px 0;
+      color: var(--gray-300); font-size: 0.85rem;
+    }
   </style>
 </head>
 <body class="scanner-page">
@@ -181,6 +301,38 @@
       <button class="btn-scanner btn-stop" id="stopBtn" onclick="stopScanner()" style="display:none;">
         <i class="fa-solid fa-stop"></i> Stop
       </button>
+    </div>
+
+    <!-- Manual Check-in Panel -->
+    <div class="manual-panel" id="manualPanel">
+      <button class="manual-panel-toggle" id="manualToggle" onclick="toggleManualPanel()">
+        <div class="mp-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <span>Manual Check-in — Search by Name</span>
+        <i class="fa-solid fa-chevron-down mp-chevron"></i>
+      </button>
+      <div class="manual-panel-body" id="manualPanelBody">
+
+        <div class="manual-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="search"
+            id="manualSearchInput"
+            class="manual-search-input"
+            placeholder="Type first name, last name, or PUID…"
+            autocomplete="off"
+            oninput="onManualSearch(this.value)"
+          />
+        </div>
+        <p class="manual-search-hint">Select an event above first. Results appear as you type (min 2 characters).</p>
+
+        <div class="manual-results" id="manualResults">
+          <div class="manual-empty" id="manualEmptyState">
+            <i class="fa-solid fa-users" style="font-size:1.6rem;margin-bottom:8px;display:block;"></i>
+            Start typing to search attendees
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </main>

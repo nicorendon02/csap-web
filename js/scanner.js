@@ -185,3 +185,170 @@ function setStatus(type, html) {
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+// ── Manual Check-in Panel ─────────────────────────────
+
+function toggleManualPanel() {
+  const toggle = document.getElementById('manualToggle');
+  const body   = document.getElementById('manualPanelBody');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+  if (!isOpen) {
+    // Focus search input when opened
+    setTimeout(() => document.getElementById('manualSearchInput')?.focus(), 150);
+  }
+}
+
+// Debounce helper
+let _manualSearchTimer = null;
+function onManualSearch(value) {
+  clearTimeout(_manualSearchTimer);
+  _manualSearchTimer = setTimeout(() => _doManualSearch(value.trim()), 300);
+}
+
+async function _doManualSearch(query) {
+  const resultsEl = document.getElementById('manualResults');
+  const eventId   = document.getElementById('scanEventSelect')?.value;
+
+  if (!eventId) {
+    resultsEl.innerHTML = `<div class="manual-empty"><i class="fa-solid fa-calendar-days" style="font-size:1.4rem;margin-bottom:8px;display:block;"></i>Please select an event first.</div>`;
+    return;
+  }
+
+  if (query.length < 2) {
+    resultsEl.innerHTML = `<div class="manual-empty"><i class="fa-solid fa-users" style="font-size:1.6rem;margin-bottom:8px;display:block;"></i>Start typing to search attendees</div>`;
+    return;
+  }
+
+  // Loading state
+  resultsEl.innerHTML = `<div class="manual-empty"><i class="fa-solid fa-spinner fa-spin" style="font-size:1.4rem;margin-bottom:8px;display:block;"></i>Searching…</div>`;
+
+  try {
+    const body = new FormData();
+    body.append('event_id', eventId);
+    body.append('query', query);
+    const res  = await fetch('php/events/search-attendees.php', { method: 'POST', body });
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error);
+    _renderManualResults(data.results ?? []);
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="manual-empty" style="color:#dc2626;"><i class="fa-solid fa-circle-xmark" style="font-size:1.4rem;margin-bottom:8px;display:block;"></i>${escHtml(err.message)}</div>`;
+  }
+}
+
+function _renderManualResults(results) {
+  const resultsEl = document.getElementById('manualResults');
+
+  if (results.length === 0) {
+    resultsEl.innerHTML = `<div class="manual-empty"><i class="fa-solid fa-user-slash" style="font-size:1.4rem;margin-bottom:8px;display:block;"></i>No attendees found.</div>`;
+    return;
+  }
+
+  resultsEl.innerHTML = results.map(r => {
+    const initials   = (r.first_name[0] ?? '') + (r.last_name[0] ?? '');
+    const isChecked  = r.checked_in === 1;
+    const avatarCls  = isChecked ? 'mr-avatar checked' : 'mr-avatar';
+    const avatarIcon = isChecked ? '<i class="fa-solid fa-check"></i>' : escHtml(initials.toUpperCase());
+
+    const badges = [];
+    if (r.entry_ticket) badges.push('<span class="mr-badge mr-badge-entry">Entry</span>');
+    if (r.food_ticket)  badges.push('<span class="mr-badge mr-badge-food">Food</span>');
+    if (isChecked)      badges.push('<span class="mr-badge mr-badge-checked"><i class="fa-solid fa-circle-check"></i> Checked in</span>');
+
+    const btnLabel   = isChecked ? '<i class="fa-solid fa-check"></i> Done' : '<i class="fa-solid fa-right-to-bracket"></i> Check In';
+    const btnDisabled = isChecked ? 'disabled' : '';
+
+    return `
+    <div class="manual-result-row ${isChecked ? 'already-in' : ''}" id="manualRow-${r.id}">
+      <div class="${avatarCls}">${avatarIcon}</div>
+      <div class="mr-info">
+        <div class="mr-name">${escHtml(r.first_name)} ${escHtml(r.last_name)}</div>
+        <div class="mr-meta">
+          <span><i class="fa-solid fa-id-card"></i> ${escHtml(r.puid)}</span>
+          ${badges.join(' ')}
+        </div>
+      </div>
+      <button class="btn-manual-checkin" ${btnDisabled}
+              onclick="manualCheckin(${r.id}, '${escHtml(r.puid)}', this)"
+              id="manualBtn-${r.id}">
+        ${btnLabel}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+async function manualCheckin(regId, puid, btnEl) {
+  const eventId = document.getElementById('scanEventSelect')?.value;
+  if (!eventId) return;
+
+  btnEl.disabled = true;
+  btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+  const body = new FormData();
+  body.append('event_id', eventId);
+  body.append('puid', puid);
+
+  try {
+    const res  = await fetch('php/events/checkin.php', { method: 'POST', body });
+    const data = await res.json();
+
+    if (data.already_checked_in) {
+      // Mark row as already checked in
+      _markRowChecked(regId, data);
+      Swal.fire({
+        icon: 'warning',
+        title: 'Already checked in!',
+        html: `<strong>${escHtml(data.first_name)} ${escHtml(data.last_name)}</strong><br>
+               <span style="color:#888;font-size:0.85rem;">This attendee was already scanned in.</span>`,
+        confirmButtonColor: '#c2971a',
+      });
+      return;
+    }
+
+    if (data.error || !data.success) {
+      btnEl.disabled = false;
+      btnEl.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Check In';
+      Swal.fire({
+        icon: 'error',
+        title: 'Check-in failed',
+        text: data.message || data.error || 'Unknown error.',
+        confirmButtonColor: '#c2971a',
+      });
+      return;
+    }
+
+    // ── SUCCESS ──────────────────────────────────────
+    _markRowChecked(regId, data);
+    showCheckinOverlay(data);
+    setStatus('found', `<i class="fa-solid fa-circle-check"></i> Checked in: ${escHtml(data.first_name)} ${escHtml(data.last_name)}`);
+
+  } catch {
+    btnEl.disabled = false;
+    btnEl.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Check In';
+    Swal.fire({ icon: 'error', title: 'Network error', text: 'Could not reach the server.', confirmButtonColor: '#c2971a' });
+  }
+}
+
+function _markRowChecked(regId, data) {
+  const row = document.getElementById(`manualRow-${regId}`);
+  const btn = document.getElementById(`manualBtn-${regId}`);
+  if (row) row.classList.add('already-in');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Done';
+  }
+  // Update avatar to green check
+  const avatar = row?.querySelector('.mr-avatar');
+  if (avatar) {
+    avatar.classList.add('checked');
+    avatar.innerHTML = '<i class="fa-solid fa-check"></i>';
+  }
+  // Add checked badge to meta
+  const meta = row?.querySelector('.mr-meta');
+  if (meta && !meta.querySelector('.mr-badge-checked')) {
+    meta.insertAdjacentHTML('beforeend', '<span class="mr-badge mr-badge-checked"><i class="fa-solid fa-circle-check"></i> Checked in</span>');
+  }
+}
+

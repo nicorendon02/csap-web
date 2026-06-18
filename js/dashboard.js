@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (canManage) {
     document.getElementById('newRoleGroup')?.style && (document.getElementById('newRoleGroup').style.display = currentUser.role === 'admin' ? 'block' : 'none');
     document.getElementById('editRoleGroup')?.style && (document.getElementById('editRoleGroup').style.display = currentUser.role === 'admin' ? 'block' : 'none');
+    // Show CSV import button (inherits manage-only visibility above, explicit for clarity)
+    const csvBtn = document.getElementById('csvImportBtn');
+    if (csvBtn) csvBtn.style.display = '';
   }
 
   // 4. Determine which view to show
