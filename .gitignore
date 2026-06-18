@@ -10,3 +10,5 @@
 *.sqlite3
 *.pdf
 node_modules/
+playwright-report/
+test-results/
