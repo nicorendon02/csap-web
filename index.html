@@ -824,57 +824,63 @@
   <script src="js/index-events.js"></script>
 
 
-  <!-- Podcast Widget JS — YouTube Data API v3 with 24h cache -->
+  <!-- Podcast Widget JS — static JSON, no YouTube API key required -->
   <script>
     (function () {
-      // ─────────────────────────────────────────────────────────
-      // CONFIG — paste your free YouTube Data API v3 key below.
-      //
-      // How to get one (free):
-      //  1. https://console.cloud.google.com/ → New Project
-      //  2. APIs & Services → Enable "YouTube Data API v3"
-      //  3. Credentials → Create API Key
-      //  4. (Recommended) Restrict key to csapurdue.com
-      // ─────────────────────────────────────────────────────────
-      var API_KEY     = '';   // <── paste your API key here
-      var PLAYLIST_ID = 'UU1bKiJRsznnA_CL2gFPAwkg'; // channel uploads playlist
-      var MAX_RESULTS = 6;
-      var CACHE_KEY   = 'voicesUREPC_v1';
-      var CACHE_TTL   = 24 * 60 * 60 * 1000; // 24 hours
+      var VIDEO_DATA_URL = 'data/youtube-videos.json';
 
-      // Fallback shown when no API key is configured
       var FALLBACK = [
-        { id: 'rOge4DRDeGc', title: 'UREP-C Cambia vidas',                   date: '2024' },
-        { id: 'nlf2EyLrvMo', title: 'Perspectivas de Posgrado',               date: '2024' },
-        { id: '9-UPuJiPEQg', title: 'Viajar en Estados Unidos siendo UREP-C', date: '2024' },
-        { id: 'Mlcjanz4ZcM', title: 'Investigar en Purdue',                   date: '2024' },
-        { id: 'ctqDS_5h_G4', title: 'Vivir en West Lafayette',                date: '2024' },
-        { id: 'ST5KR0xuor4', title: 'Buscando visa para un sue\u00f1o',        date: '2024' },
+        { id: 'rOge4DRDeGc', title: 'UREP-C Cambia vidas',                   date: '2024', episode: 7 },
+        { id: 'nlf2EyLrvMo', title: 'Perspectivas de Posgrado',               date: '2024', episode: 6 },
+        { id: '9-UPuJiPEQg', title: 'Viajar en Estados Unidos siendo UREP-C', date: '2024', episode: 5 },
+        { id: 'Mlcjanz4ZcM', title: 'Investigar en Purdue',                   date: '2024', episode: 4 },
+        { id: 'ctqDS_5h_G4', title: 'Vivir en West Lafayette',                date: '2024', episode: 3 },
+        { id: 'ST5KR0xuor4', title: 'Buscando visa para un sue\u00f1o',        date: '2024', episode: 2 },
       ];
+
+      function escapeHTML(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function isValidVideo(v) {
+        return v && typeof v.id === 'string' && /^[a-zA-Z0-9_-]{6,}$/.test(v.id)
+          && typeof v.title === 'string' && v.title.trim();
+      }
 
       function cardHTML(v, epNum) {
         var thumb = 'https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg';
         var ytUrl = 'https://www.youtube.com/watch?v=' + v.id;
-        return '<div class="podcast-card fade-in" role="button" tabindex="0"'
-          + ' onclick="window.open(\'' + ytUrl + '\',\'_blank\',\'noopener\')"'
+        var title = escapeHTML(v.title);
+        var episode = Number.isFinite(Number(v.episode)) ? Number(v.episode) : epNum;
+        return '<div class="podcast-card fade-in" role="button" tabindex="0" data-youtube-url="' + ytUrl + '"'
           + ' aria-label="Watch on YouTube">'
           + '<div class="podcast-thumb">'
-          + '<img src="' + thumb + '" alt="' + v.title.replace(/"/g, '&quot;') + '" loading="lazy" decoding="async" />'
+          + '<img src="' + thumb + '" alt="' + title + '" loading="lazy" decoding="async" />'
           + '<div class="podcast-play-btn"><span>&#9654;</span></div>'
-          + '<span class="podcast-ep-num">Ep. ' + epNum + '</span>'
+          + '<span class="podcast-ep-num">Ep. ' + episode + '</span>'
           + '</div><div class="podcast-card-body">'
-          + '<p class="podcast-ep-title">' + v.title + '</p>'
+          + '<p class="podcast-ep-title">' + title + '</p>'
           + '<div class="podcast-ep-meta">'
-          + '<i class="fa-brands fa-youtube"></i> <span>' + (v.date || '') + '</span>'
+          + '<i class="fa-brands fa-youtube"></i> <span>' + escapeHTML(v.date || '') + '</span>'
           + '</div></div></div>';
       }
 
       function renderGrid(videos) {
         var grid = document.getElementById('podcastGrid');
         if (!grid) return;
+        videos = (videos || []).filter(isValidVideo).slice(0, 6);
+        if (!videos.length) videos = FALLBACK;
         var total = videos.length;
         grid.innerHTML = videos.map(function (v, i) { return cardHTML(v, total - i); }).join('');
         grid.querySelectorAll('.podcast-card').forEach(function (card) {
+          card.addEventListener('click', function () {
+            window.open(card.dataset.youtubeUrl, '_blank', 'noopener');
+          });
           card.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
           });
@@ -884,55 +890,20 @@
         });
       }
 
-      function fromCache() {
-        try {
-          var raw = localStorage.getItem(CACHE_KEY);
-          if (!raw) return null;
-          var c = JSON.parse(raw);
-          if (Date.now() - c.ts < CACHE_TTL) return c.videos;
-        } catch (e) {}
-        return null;
-      }
-
-      function toCache(videos) {
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), videos: videos })); }
-        catch (e) {}
-      }
-
-      function fetchFromYouTube() {
-        var url = 'https://www.googleapis.com/youtube/v3/playlistItems'
-          + '?part=snippet&playlistId=' + PLAYLIST_ID
-          + '&maxResults=' + MAX_RESULTS + '&key=' + API_KEY;
-        fetch(url)
-          .then(function (r) { return r.json(); })
+      function loadVideos() {
+        renderGrid(FALLBACK);
+        fetch(VIDEO_DATA_URL, { cache: 'no-cache' })
+          .then(function (r) {
+            if (!r.ok) throw new Error('video data unavailable');
+            return r.json();
+          })
           .then(function (data) {
-            if (!data.items || !data.items.length) throw new Error('empty');
-            var videos = data.items.map(function (item) {
-              return {
-                id:    item.snippet.resourceId.videoId,
-                title: item.snippet.title,
-                date:  item.snippet.publishedAt
-                  ? new Date(item.snippet.publishedAt)
-                      .toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
-                  : '',
-              };
-            });
-            toCache(videos);
-            renderGrid(videos);
+            renderGrid(Array.isArray(data.videos) ? data.videos : []);
           })
           .catch(function () { /* keep fallback already displayed */ });
       }
 
-      // ── Boot ──────────────────────────────────────────────────
-      var cached = fromCache();
-      if (cached) {
-        renderGrid(cached);
-      } else if (API_KEY) {
-        renderGrid(FALLBACK); // show instantly while fetching live data
-        fetchFromYouTube();
-      } else {
-        renderGrid(FALLBACK); // no key — static fallback
-      }
+      loadVideos();
     })();
   </script>
 </body>
