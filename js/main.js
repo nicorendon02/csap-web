@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('open');
       navLinks.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(toggle.classList.contains('open')));
     });
   }
 

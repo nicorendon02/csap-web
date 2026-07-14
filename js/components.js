@@ -8,7 +8,7 @@
 <nav class="navbar" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo" id="navLogo" aria-label="CSAP Home">
-      <img src="img/csap-logo.svg" class="logo-tunjo" width="48" height="48" alt="CSAP logo" aria-hidden="true" />
+      <img src="img/csap-navbar-logo.png" class="logo-tunjo" width="48" height="48" alt="CSAP logo" aria-hidden="true" />
       <div class="nav-logo-text">
         <span class="nav-logo-name">CSAP</span>
         <span class="nav-logo-tagline">Colombian Student Association at Purdue</span>
@@ -25,6 +25,7 @@
           <a href="previous-officers.html" id="dropPrevLink">Previous officers</a>
         </div>
       </li>
+      <li><a href="events.html" id="navEventsLink">Events</a></li>
       <li><a href="join.html" id="navJoinLink">Join &amp; Collaborate</a></li>
       <li><a href="new-student-info.html" id="navNewStudentLink">New student info</a></li>
       <li><a href="grants.html" id="navGrantsLink">Grants</a></li>
@@ -45,7 +46,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="nav-logo" style="margin-bottom:14px;">
-          <img src="img/csap-logo.svg" style="width:38px;height:38px;object-fit:contain;" alt="CSAP logo" />
+          <img src="img/csap-navbar-logo.png" style="width:38px;height:38px;object-fit:contain;" alt="CSAP logo" />
           <span style="color:var(--dark);font-weight:700;font-size:1.2rem;">CSAP</span>
         </div>
         <p>Colombian Student Association at Purdue — building community, celebrating culture, and supporting one another.</p>
