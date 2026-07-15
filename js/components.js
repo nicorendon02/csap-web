@@ -14,9 +14,6 @@
         <span class="nav-logo-tagline">Colombian Student Association at Purdue</span>
       </div>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
     <ul class="nav-links" id="navLinks" role="list">
       <li class="dropdown">
         <a href="about.html" id="navAboutUs">About Us</a>

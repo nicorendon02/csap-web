@@ -160,26 +160,6 @@ button { cursor: pointer; font-family: inherit; border: none; outline: none; }
 }
 .dropdown-menu a:hover { background: var(--gold-bg); color: var(--gold-dark); }
 
-/* Hamburger */
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  padding: 4px;
-  border-radius: 6px;
-}
-.nav-toggle span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--dark);
-  border-radius: 2px;
-  transition: transform var(--transition), opacity var(--transition);
-}
-.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.nav-toggle.open span:nth-child(2) { opacity: 0; }
-.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ── Page Header (non-home pages) ───────────────────── */
 .page-header {
@@ -426,14 +406,6 @@ footer {
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
-  .nav-links { display: none; flex-direction: column; gap: 4px; position: absolute; top: calc(var(--nav-height) + var(--stripe-h)); left: 0; right: 0; background: var(--white); padding: 16px; box-shadow: var(--shadow-lg); border-top: 1px solid var(--border); z-index: 999; }
-  .nav-links.open { display: flex; }
-  .nav-links li { width: 100%; }
-  .nav-links a { display: block; width: 100%; padding: 12px 16px; }
-  .dropdown-menu { position: static; box-shadow: none; border: none; background: var(--gold-bg); border-radius: var(--radius); margin-top: 4px; }
-  .dropdown:hover .dropdown-menu { display: none; }
-  .dropdown.open .dropdown-menu { display: block; }
-  .nav-toggle { display: flex; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; text-align: center; }
   .footer-brand .nav-logo, .footer-socials { justify-content: center; }
@@ -610,15 +582,18 @@ footer {
     0 16px 48px rgba(0, 0, 0, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0s linear 0.25s;
   z-index: 1999;
   min-width: 210px;
 }
 .dock-more-sheet.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateX(-50%) translateY(0);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0s linear 0s;
 }
 .dock-more-link {
   display: flex;
@@ -641,12 +616,10 @@ footer {
 }
 .dock-more-divider { height: 1px; background: rgba(0,0,0,0.07); margin: 4px 8px; }
 
-/* Mobile overrides */
+/* Mobile overrides — dock replaces hamburger nav */
 @media (max-width: 768px) {
   .mobile-dock { display: block; }
   body { padding-bottom: 104px; }
-  /* Hide hamburger — dock handles mobile nav */
-  .nav-toggle { display: none !important; }
   .nav-links  { display: none !important; }
 }
 

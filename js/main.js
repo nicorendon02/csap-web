@@ -5,35 +5,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── Mobile Nav Toggle (desktop hamburger fallback) ──
-  const toggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  if (toggle && navLinks) {
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('open');
-      navLinks.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(toggle.classList.contains('open')));
-    });
-  }
-
-  // ── Mobile Dropdown Toggle ─────────────────────────
-  document.querySelectorAll('.dropdown > a').forEach(link => {
-    link.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        link.parentElement.classList.toggle('open');
-      }
-    });
-  });
-
-  // ── Close nav on outside click ─────────────────────
-  document.addEventListener('click', (e) => {
-    if (navLinks && !navLinks.contains(e.target) && !toggle?.contains(e.target)) {
-      navLinks.classList.remove('open');
-      toggle?.classList.remove('open');
-    }
-  });
-
   // ── Scroll Animations (data-animate) ───────────────
   const animObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
