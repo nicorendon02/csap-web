@@ -86,9 +86,10 @@
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const events = await res.json();
 
-    if (!Array.isArray(events) || events.length === 0) return; // keep gray message
+    const upcoming = Array.isArray(events) ? events.filter(ev => !+ev.is_past) : [];
+    if (upcoming.length === 0) return; // keep gray message
 
-    grid.innerHTML = events.slice(0, 3).map(buildCard).join('');
+    grid.innerHTML = upcoming.slice(0, 3).map(buildCard).join('');
 
     // Swap: hide gray message, show grid
     empty.style.display = 'none';

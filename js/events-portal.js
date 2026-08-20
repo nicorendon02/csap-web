@@ -17,66 +17,83 @@ let guestCount = 0;
 
 document.addEventListener('DOMContentLoaded', loadPublicEvents);
 
+// ── Build event card HTML ─────────────────────────────
+function buildEventCard(ev, isPast = false) {
+  const icon     = CATEGORY_ICONS[ev.category] ?? 'fa-calendar';
+  const tagClass = 'tag-' + (ev.category || 'social');
+  const open     = +ev.registration_open === 1;
+  const tickets  = [];
+  if (+ev.has_entry_ticket) tickets.push('<span class="ticket-chip chip-entry"><i class="fa-solid fa-ticket"></i> Entry</span>');
+  if (+ev.has_food_ticket)  tickets.push('<span class="ticket-chip chip-food"><i class="fa-solid fa-utensils"></i> Food</span>');
+
+  const footerAction = isPast
+    ? `<span class="past-badge"><i class="fa-solid fa-flag-checkered"></i> Past Event</span>`
+    : open
+      ? `<button class="btn-register" onclick="openRegModal(${ev.id}, '${escJs(ev.title)}')">Register →</button>`
+      : `<span class="closed-label">Registration closed</span>`;
+
+  return `
+    <div class="event-full-card${isPast ? ' past-event-card' : ''} fade-in">
+      <div class="event-thumb"><i class="fa-solid ${icon}"></i></div>
+      <div class="event-content">
+        <div class="event-meta">
+          <span class="event-tag ${tagClass}">${capitalize(ev.category)}</span>
+          <span class="event-date-text">${ev.event_date_formatted ?? 'Date TBD'}</span>
+        </div>
+        <h3>${escHtml(ev.title)}</h3>
+        <p>${escHtml(ev.description ?? '')}</p>
+        ${tickets.length ? `<div class="ticket-chips">${tickets.join('')}</div>` : ''}
+      </div>
+      <div class="event-footer">
+        <span class="event-location">
+          <i class="fa-solid fa-location-dot"></i> ${escHtml(ev.location ?? 'TBD')}
+        </span>
+        ${footerAction}
+      </div>
+    </div>`;
+}
+
 // ── Load Events ───────────────────────────────────────
 async function loadPublicEvents() {
   try {
     const res    = await fetch('php/events/get-events.php');
     const events = await res.json();
 
-    const section = document.getElementById('eventsSection');
-    const empty   = document.getElementById('eventsEmpty');
-    const follow  = document.getElementById('eventsFollowSection');
-    const grid    = document.getElementById('eventsGrid');
+    const section     = document.getElementById('eventsSection');
+    const empty       = document.getElementById('eventsEmpty');
+    const follow      = document.getElementById('eventsFollowSection');
+    const grid        = document.getElementById('eventsGrid');
+    const pastSection = document.getElementById('pastEventsSection');
+    const pastGrid    = document.getElementById('pastEventsGrid');
 
-    if (!Array.isArray(events) || events.length === 0) {
+    if (!Array.isArray(events)) throw new Error('Invalid response');
+
+    const upcoming = events.filter(ev => !+ev.is_past);
+    const past     = events.filter(ev =>  +ev.is_past).reverse(); // most recent past first
+
+    // ── Upcoming ──────────────────────────────────────
+    if (upcoming.length === 0) {
       section.style.display = 'none';
       empty.style.display   = '';
-      return;
+    } else {
+      empty.style.display   = 'none';
+      section.style.display = '';
+      grid.innerHTML = upcoming.map(ev => buildEventCard(ev, false)).join('');
     }
 
-    empty.style.display   = 'none';
-    follow.style.display  = '';
-    section.style.display = '';
+    // ── Past ──────────────────────────────────────────
+    if (past.length > 0) {
+      pastGrid.innerHTML    = past.map(ev => buildEventCard(ev, true)).join('');
+      pastSection.style.display = '';
+      follow.style.display      = '';
+    } else if (upcoming.length > 0) {
+      follow.style.display = '';
+    }
 
-    grid.innerHTML = events.map(ev => {
-      const icon     = CATEGORY_ICONS[ev.category] ?? 'fa-calendar';
-      const tagClass = 'tag-' + (ev.category || 'social');
-      const open     = +ev.registration_open === 1;
-      const tickets  = [];
-      if (+ev.has_entry_ticket) tickets.push('<span class="ticket-chip chip-entry"><i class="fa-solid fa-ticket"></i> Entry</span>');
-      if (+ev.has_food_ticket)  tickets.push('<span class="ticket-chip chip-food"><i class="fa-solid fa-utensils"></i> Food</span>');
-
-      const registerBtn = open
-        ? `<button class="btn-register" onclick="openRegModal(${ev.id}, '${escJs(ev.title)}')">
-             Register →
-           </button>`
-        : `<span class="closed-label">Registration closed</span>`;
-
-      return `
-        <div class="event-full-card fade-in">
-          <div class="event-thumb"><i class="fa-solid ${icon}"></i></div>
-          <div class="event-content">
-            <div class="event-meta">
-              <span class="event-tag ${tagClass}">${capitalize(ev.category)}</span>
-              <span class="event-date-text">${ev.event_date_formatted ?? 'Date TBD'}</span>
-            </div>
-            <h3>${escHtml(ev.title)}</h3>
-            <p>${escHtml(ev.description ?? '')}</p>
-            ${tickets.length ? `<div class="ticket-chips">${tickets.join('')}</div>` : ''}
-          </div>
-          <div class="event-footer">
-            <span class="event-location">
-              <i class="fa-solid fa-location-dot"></i> ${escHtml(ev.location ?? 'TBD')}
-            </span>
-            ${registerBtn}
-          </div>
-        </div>`;
-    }).join('');
-
-    // Trigger fade-in
+    // Trigger fade-in for all cards
     requestAnimationFrame(() =>
-      document.querySelectorAll('.event-full-card.fade-in').forEach(el => {
-        setTimeout(() => el.classList.add('visible'), 50);
+      document.querySelectorAll('.event-full-card.fade-in').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 60);
       })
     );
 

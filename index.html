@@ -271,8 +271,8 @@
     }
     .contact-half:first-child .contact-half-inner { margin-left: auto; }
     .contact-half:last-child .contact-half-inner { margin-right: auto; }
-    .contact-half:first-child { background: var(--gold-bg); border-right: 1px solid var(--border); }
-    .contact-half:last-child { background: var(--cream); border-left: 1px solid var(--border); }
+    .contact-half:first-child { background: var(--cream); border-right: 1px solid var(--border); }
+    .contact-half:last-child { background: var(--cream); }
     .contact-half h2 {
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 1.8rem;
@@ -287,37 +287,27 @@
     .social-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
+      gap: 8px;
+      padding: 12px 28px;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 600;
       transition: all var(--transition);
+      border: 2px solid var(--gold-dark);
+      color: var(--gold-dark);
+      background: transparent;
+      text-decoration: none;
+      white-space: nowrap;
     }
-    .social-pill.instagram { background: #f5f0ff; color: #7b3fe4; }
-    .social-pill.facebook { background: #eef3ff; color: #1877f2; }
-    .social-pill.linkedin { background: #e8f3ff; color: #0a66c2; }
-    .social-pill:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .social-pill:hover { background: var(--gold); color: var(--white); border-color: var(--gold); transform: translateY(-1px); }
 
     /* ── Podcast Widget ────────────────────────────────── */
     .podcast-section {
-      background: var(--dark);
+      background: var(--white);
       padding: 72px 24px;
       position: relative;
       overflow: hidden;
     }
-    .podcast-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 55% 50% at 10% 50%, rgba(194,154,18,0.10) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 50% at 90% 50%, rgba(194,154,18,0.07) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .podcast-section .section-label { color: var(--gold-light); }
-    .podcast-section .section-title { color: var(--white); }
-    .podcast-section .section-divider { background: var(--gold); }
     .podcast-header {
       display: flex;
       align-items: flex-start;
@@ -330,12 +320,11 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
+      background: var(--gold-bg);
+      border: 1px solid rgba(194,154,18,0.25);
       padding: 8px 16px;
       border-radius: 999px;
-      color: rgba(255,255,255,0.75);
+      color: var(--gold-dark);
       font-size: 0.8rem;
       font-weight: 500;
       margin-top: 20px;
@@ -351,16 +340,68 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.5; transform: scale(0.75); }
     }
-    .podcast-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .podcast-carousel-wrapper {
+      position: relative;
       max-width: 1200px;
       margin: 0 auto;
     }
+    .podcast-carousel {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 8px 2px 16px;
+    }
+    .podcast-carousel::-webkit-scrollbar { display: none; }
+    .podcast-nav {
+      position: absolute;
+      top: 38%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--dark);
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    .podcast-nav:hover { background: var(--gold-bg); color: var(--gold-dark); border-color: var(--gold); }
+    .podcast-nav:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
+    .podcast-nav--prev { left: -20px; }
+    .podcast-nav--next { right: -20px; }
+    .podcast-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 4px;
+    }
+    .podcast-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .podcast-dot.active { background: var(--gold); width: 22px; }
     .podcast-card {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
+      flex: 0 0 calc((100% - 40px) / 3);
+      scroll-snap-align: start;
+      background: var(--white);
+      border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       overflow: hidden;
       transition: all 0.3s ease;
@@ -368,12 +409,12 @@
       text-decoration: none;
       color: inherit;
       display: block;
+      box-shadow: var(--shadow);
     }
     .podcast-card:hover {
-      background: rgba(255,255,255,0.11);
       border-color: rgba(194,154,18,0.55);
       transform: translateY(-6px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(194,154,18,0.2);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(194,154,18,0.2);
     }
     .podcast-thumb {
       position: relative;
@@ -410,7 +451,6 @@
       justify-content: center;
       color: #111;
       font-size: 1.1rem;
-      padding-left: 4px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.4);
       transition: transform 0.2s ease;
     }
@@ -434,7 +474,7 @@
     .podcast-ep-title {
       font-size: 0.95rem;
       font-weight: 600;
-      color: var(--white);
+      color: var(--dark);
       line-height: 1.4;
       margin-bottom: 8px;
       display: -webkit-box;
@@ -447,7 +487,7 @@
       align-items: center;
       gap: 10px;
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.45);
+      color: var(--gray-500);
     }
     .podcast-ep-meta i { font-size: 0.7rem; }
     .podcast-footer {
@@ -531,10 +571,11 @@
     .podcast-modal-close:hover { background: #f0f0f0; }
 
     @media (max-width: 900px) {
-      .podcast-grid { grid-template-columns: repeat(2, 1fr); }
+      .podcast-card { flex: 0 0 calc((100% - 20px) / 2); }
     }
     @media (max-width: 600px) {
-      .podcast-grid { grid-template-columns: 1fr; }
+      .podcast-card { flex: 0 0 85%; }
+      .podcast-nav { display: none; }
       .podcast-header { flex-direction: column; }
     }
 
@@ -729,7 +770,7 @@
             <p class="section-label">Our Podcast</p>
             <h2 class="section-title">Voices of UREP-C</h2>
             <div class="section-divider"></div>
-            <p style="color:rgba(255,255,255,0.65); font-size:0.95rem; line-height:1.75; max-width:520px;">
+            <p style="color:var(--gray-500); font-size:0.95rem; line-height:1.75; max-width:520px;">
               Real stories from Colombian researchers and students navigating life in the U.S. through the UREP-C program — from visas to grad school, one episode at a time.
             </p>
           </div>
@@ -739,14 +780,23 @@
           </div>
         </div>
 
-        <div class="podcast-grid" id="podcastGrid">
-          <!-- Episodes loaded dynamically by JS -->
-        </div><!-- /.podcast-grid -->
+        <div class="podcast-carousel-wrapper">
+          <button class="podcast-nav podcast-nav--prev" id="podcastPrev" aria-label="Previous episode">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="podcast-carousel" id="podcastGrid">
+            <!-- Episodes loaded dynamically by JS -->
+          </div>
+          <button class="podcast-nav podcast-nav--next" id="podcastNext" aria-label="Next episode">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="podcast-dots" id="podcastDots"></div>
 
         <div class="podcast-footer">
           <a href="https://www.youtube.com/@VoicesofUREP-C"
              target="_blank" rel="noopener"
-             class="btn btn-outline-white"
+             class="btn btn-outline"
              id="podcastYtChannelBtn">
             <i class="fa-brands fa-youtube"></i>
             Watch all episodes on YouTube
@@ -776,9 +826,11 @@
           <h2>Follow Us</h2>
           <p>Keep up with CSAP events, announcements, and community highlights on social media.</p>
           <div class="social-links">
-            <a href="https://www.instagram.com/csapurdue/" target="_blank" rel="noopener" class="social-pill instagram" id="socialInstagram"><i class="fa-brands fa-instagram"></i> @csapurdue</a>
-            <a href="https://www.facebook.com/CSAPURDUE/" target="_blank" rel="noopener" class="social-pill facebook" id="socialFacebook"><i class="fa-brands fa-facebook-f"></i> CSAP Purdue</a>
-            <a href="https://www.linkedin.com/company/csapurdue" target="_blank" rel="noopener" class="social-pill linkedin" id="socialLinkedin"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+            <a href="https://www.instagram.com/csapurdue/" target="_blank" rel="noopener" class="social-pill" id="socialInstagram"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href="https://www.facebook.com/CSAPURDUE/" target="_blank" rel="noopener" class="social-pill" id="socialFacebook"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+            <a href="https://www.linkedin.com/company/csapurdue" target="_blank" rel="noopener" class="social-pill" id="socialLinkedin"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+            <a href="https://x.com/csapurdue" target="_blank" rel="noopener" class="social-pill" id="socialX"><i class="fa-brands fa-x-twitter"></i> X</a>
+            <a href="https://www.tiktok.com/@csapurdue" target="_blank" rel="noopener" class="social-pill" id="socialTiktok"><i class="fa-brands fa-tiktok"></i> TikTok</a>
           </div>
           <a href="https://boilerlink.purdue.edu/organization/csap" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:8px; width:fit-content;" id="boilerlinkBtn">Join on BoilerLink →</a>
         </div>
@@ -842,7 +894,7 @@
           + ' aria-label="Watch on YouTube">'
           + '<div class="podcast-thumb">'
           + '<img src="' + thumb + '" alt="' + v.title.replace(/"/g, '&quot;') + '" loading="lazy" />'
-          + '<div class="podcast-play-btn"><span>&#9654;</span></div>'
+          + '<div class="podcast-play-btn"><span><i class="fa-solid fa-play"></i></span></div>'
           + '<span class="podcast-ep-num">Ep. ' + epNum + '</span>'
           + '</div><div class="podcast-card-body">'
           + '<p class="podcast-ep-title">' + v.title + '</p>'
@@ -863,7 +915,54 @@
         });
         requestAnimationFrame(function () {
           grid.querySelectorAll('.fade-in').forEach(function (el) { el.classList.add('visible'); });
+          initCarousel(grid, total);
         });
+      }
+
+      function initCarousel(track, total) {
+        var prevBtn = document.getElementById('podcastPrev');
+        var nextBtn = document.getElementById('podcastNext');
+        var dotsEl  = document.getElementById('podcastDots');
+        if (!prevBtn || !nextBtn) return;
+
+        // Build dots
+        if (dotsEl) {
+          dotsEl.innerHTML = Array.from({ length: total }, function (_, i) {
+            return '<button class="podcast-dot' + (i === 0 ? ' active' : '') + '" aria-label="Go to episode ' + (total - i) + '"></button>';
+          }).join('');
+          dotsEl.querySelectorAll('.podcast-dot').forEach(function (dot, i) {
+            dot.addEventListener('click', function () {
+              var card = track.querySelectorAll('.podcast-card')[i];
+              if (card) track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+            });
+          });
+        }
+
+        function cardWidth() {
+          var card = track.querySelector('.podcast-card');
+          if (!card) return 0;
+          var gap = parseInt(getComputedStyle(track).gap || '20', 10);
+          return card.offsetWidth + gap;
+        }
+
+        function updateState() {
+          var sl = Math.round(track.scrollLeft);
+          var maxScroll = track.scrollWidth - track.clientWidth;
+          prevBtn.disabled = sl <= 2;
+          nextBtn.disabled = sl >= maxScroll - 2;
+          if (dotsEl) {
+            var cw = cardWidth();
+            var activeIdx = cw > 0 ? Math.round(sl / cw) : 0;
+            dotsEl.querySelectorAll('.podcast-dot').forEach(function (dot, i) {
+              dot.classList.toggle('active', i === activeIdx);
+            });
+          }
+        }
+
+        prevBtn.addEventListener('click', function () { track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }); });
+        nextBtn.addEventListener('click', function () { track.scrollBy({ left:  cardWidth(), behavior: 'smooth' }); });
+        track.addEventListener('scroll', updateState, { passive: true });
+        updateState();
       }
 
       function fromCache() {

@@ -48,7 +48,7 @@ try {
         );
         $stmt->execute([$nowIndy]);
     } else {
-        // Public view: active events with open registration flag
+        // Public view: active events, upcoming first then past (most recent first)
         $stmt = $db->prepare(
             'SELECT id, title, description, category, location,
                     DATE_FORMAT(event_date, "%a, %b %d, %Y") AS event_date_formatted,
@@ -59,12 +59,13 @@ try {
                     CASE WHEN registration_closes_at IS NULL
                               OR registration_closes_at > ?
                          THEN 1 ELSE 0 END AS registration_open,
+                    CASE WHEN event_date < ? THEN 1 ELSE 0 END AS is_past,
                     status
              FROM csap_events
              WHERE status = "active"
-             ORDER BY event_date ASC'
+             ORDER BY is_past ASC, event_date ASC'
         );
-        $stmt->execute([$nowIndy]);
+        $stmt->execute([$nowIndy, $nowIndy]);
     }
 
     echo json_encode($stmt->fetchAll());
