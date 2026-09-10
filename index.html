@@ -575,7 +575,9 @@
     }
     @media (max-width: 600px) {
       .podcast-card { flex: 0 0 85%; }
-      .podcast-nav { display: none; }
+      .podcast-nav { left: auto; right: auto; }
+      .podcast-nav--prev { left: 4px; }
+      .podcast-nav--next { right: 4px; }
       .podcast-header { flex-direction: column; }
     }
 
@@ -649,7 +651,6 @@
         src="vid/csap-cover.mp4"
         autoplay
         muted
-        loop
         playsinline
         preload="auto"
         aria-hidden="true">

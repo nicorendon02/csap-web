@@ -35,10 +35,7 @@
                       background:#e6f9f0;color:#15803d;border:1px solid #bbf0d5;">
            <i class="fa-solid fa-circle" style="font-size:.4rem;"></i> Registration Open
          </span>`
-      : `<span style="font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;
-                      background:#fff0f0;color:#dc2626;border:1px solid #fecaca;">
-           <i class="fa-solid fa-lock" style="font-size:.6rem;"></i> Closed
-         </span>`;
+      : '';
 
     const loc = ev.location
       ? `<div style="font-size:.78rem;color:#999;display:flex;align-items:center;gap:5px;margin-bottom:8px;">
